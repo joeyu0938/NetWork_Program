@@ -96,7 +96,12 @@ namespace WinFormsApp1
             //傳送資料
             AddMessage("傳送");
             Balls control = new Balls();// 要處理的動作
-            dicClient[ID].little_balls = random_little_ball_set;//初次進入撒現在剩下的小點點
+            dicClient[ID].little_balls = new List<litte_ball>();
+            for (int i = 0; i < random_little_ball_set.Count; i++)
+            {
+                dicClient[ID].little_balls.Add(random_little_ball_set[i]);
+            }
+            //dicClient[ID].little_balls = random_little_ball_set;//初次進入撒現在剩下的小點點
             AddMessage(string.Format("Sending to {0}", dicClient[ID].s.ToString()));
             while (true)
             {

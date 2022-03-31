@@ -11,6 +11,7 @@ namespace WFclient
 {
     public partial class Form1 : Form
     {
+        bool started = false;
         Ball b = new Ball();
         SocketHelper SocketH = new SocketHelper();
         private Graphics g;
@@ -20,6 +21,8 @@ namespace WFclient
         public Form1()
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
+            this.TopMost = true;
             g = this.CreateGraphics();
             button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
             b.x = 50;
@@ -67,16 +70,16 @@ namespace WFclient
         private void Form1_Resize(object sender, EventArgs e)
         {
             button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
+            if(started) Render();
         }
         private void button1_Click(object sender, EventArgs e)
         {
             //Init my socket
             SocketH.Init(b);
             button1.Visible = false;
-            g.Clear(Color.Tan);
-            g.FillEllipse(myBrush, b.x, b.y, b.r, b.r);
+            started = true;
+            Render();
         }
-
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.W)
@@ -96,10 +99,21 @@ namespace WFclient
                 b.move = 'r';
             }
         }
-
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             b.move = '\0';
+        }
+        private void Render()
+        {
+            g.Clear(Color.Tan);
+            g.FillEllipse(myBrush, b.x, b.y, b.r, b.r);
+            if (b.little_balls != null && b.little_balls.Count > 0)
+            {
+                foreach (litte_ball smb_i in b.little_balls)
+                {
+                    g.FillEllipse(myBrush, smb_i.x, smb_i.y, 10, 10);
+                }
+            }
         }
     }
 }
