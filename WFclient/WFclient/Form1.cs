@@ -14,35 +14,34 @@ namespace WFclient
         Ball b = new Ball();
         SocketHelper SocketH = new SocketHelper();
         private Graphics g;
-        private Pen p;
         private SolidBrush myBrush = new SolidBrush(System.Drawing.Color.Red);
         private Thread thread_sender;
-        private Thread thread_receiver ;
+        private Thread thread_receiver;
         public Form1()
         {
             InitializeComponent();
             g = this.CreateGraphics();
             button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
-
             b.x = 50;
             b.y = 50;
             b.r = 50;
-
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            (thread_sender = new(() => {
+            (thread_sender = new(() =>
+            {
                 while (true)
                 {
                     SocketH.Send();
-                    Invoke(() => {
+                    //Invoke(() => {
 
-                    });
+                    //});
                 }
             })
             { IsBackground = true }).Start();
 
-            (thread_receiver = new(() => {
+            (thread_receiver = new(() =>
+            {
                 int count = 0;
                 Thread.Sleep(300);
                 DateTime LastRev = DateTime.Now;
@@ -51,7 +50,8 @@ namespace WFclient
                     Thread.Sleep(10);
                     string rev = SocketH.Receive();
 
-                    Invoke(() => {
+                    Invoke(() =>
+                    {
                         if (rev != "")
                         {
                             count++;
@@ -74,12 +74,32 @@ namespace WFclient
             SocketH.Init(b);
             button1.Visible = false;
             g.Clear(Color.Tan);
-            g.FillEllipse (myBrush, b.x, b.y, b.r, b.r);
+            g.FillEllipse(myBrush, b.x, b.y, b.r, b.r);
         }
-        private string message = "?";
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.W)
+            {
+                b.move = 'u';
+            }
+            else if(e.KeyCode == Keys.A)
+            {
+                b.move = 'l';
+            }
+            else if (e.KeyCode == Keys.S)
+            {
+                b.move = 'd';
+            }
+            else if(e.KeyCode == Keys.D)
+            {
+                b.move = 'r';
+            }
         }
-        
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            b.move = '\0';
+        }
     }
 }
