@@ -47,6 +47,8 @@ namespace SocketControl
                 return;
             EndPoint ep = (EndPoint)iep;
             string jsonstring = JsonSerializer.Serialize(BallRef);
+            //if(BallRef.move != 'n')
+            //    BallRef.move = 'n';
             byteSendingArray = Encoding.UTF8.GetBytes(jsonstring);
             socketClient.SendTo(byteSendingArray, ep);
         }

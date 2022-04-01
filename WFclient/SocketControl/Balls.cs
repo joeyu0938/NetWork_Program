@@ -8,17 +8,27 @@ namespace Classlibary
     [Serializable]
     public class Ball // 玩家ball socket傳送的class
     {
-        public System.Net.EndPoint s { get; set; }//待傳來資料
-        public Dictionary<string, Ball> Other_ID { get; set; }//待傳來資料
-        public List<litte_ball> little_balls { get; set; }//待傳來資料
-        public string ID { get; set; }//待傳來資料
-        public int x { get; set; }//初始資料
-        public int y { get; set; }//初始資料
-        public int r { get; set; }//初始資料
-        public bool collision { get; set; }//待傳來資料
-        public bool Eat { get; set; }//待傳來資料
-        public bool Dead { get; set; }//待傳來資料
-        public char move { get; set; }//傳去資料
+        private Dictionary<string, Ball> Other_ID;
+        public Dictionary<string, Ball> Set_Other_ID
+        {
+            get => Other_ID;
+            set => Other_ID = value;
+
+        }
+        private List<litte_ball> little_balls;
+        public List<litte_ball> Set_little_balls
+        {
+            get => little_balls;
+            set => little_balls = value;
+        }
+        public string ID { get; set; }
+        public int x { get; set; }
+        public int y { get; set; }
+        public int r { get; set; }
+        public bool collision { get; set; }
+        public bool Eat { get; set; }
+        public bool Dead { get; set; }
+        public char move { get; set; }
     }
     public class litte_ball // 吃的小球class
     {
@@ -33,10 +43,10 @@ namespace Classlibary
         }
         public void ADD_Other_ID(string s, ref Ball b)
         {
-            bool exist = b.Other_ID.ContainsKey(s);
+            bool exist = b.Set_Other_ID.ContainsKey(s);
             if (exist == false)
             {
-                b.Other_ID.Add(s, b);
+                b.Set_Other_ID.Add(s, b);
             }
             else
             {
@@ -48,8 +58,8 @@ namespace Classlibary
             litte_ball tmp = new litte_ball();
             tmp.x = x;
             tmp.y = y;
-            if (b.little_balls.Contains(tmp)) return;
-            b.little_balls.Add(tmp);
+            if (b.Set_little_balls.Contains(tmp)) return;
+            b.Set_little_balls.Add(tmp);
         }
         public void random_little_balls(int number,ref Ball b)
         {

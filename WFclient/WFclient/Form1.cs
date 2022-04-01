@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Classlibary;
 using SocketControl;
+using System.Text.Json;
+using System.Collections.Generic;
 
 namespace WFclient
 {
@@ -21,13 +23,14 @@ namespace WFclient
         public Form1()
         {
             InitializeComponent();
-            this.WindowState = FormWindowState.Maximized;
+            //this.WindowState = FormWindowState.Maximized;
             this.TopMost = true;
             g = this.CreateGraphics();
             button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
             b.x = 50;
             b.y = 50;
             b.r = 50;
+            b.move = 'n';
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -36,9 +39,9 @@ namespace WFclient
                 while (true)
                 {
                     SocketH.Send();
-                    //Invoke(() => {
-
-                    //});
+                    Invoke(() => {
+                        label2.Text = b.move.ToString();
+                    });
                 }
             })
             { IsBackground = true }).Start();
@@ -52,7 +55,8 @@ namespace WFclient
                 {
                     Thread.Sleep(10);
                     string rev = SocketH.Receive();
-
+                    if (rev != "")
+                        b = JsonSerializer.Deserialize<Ball>(rev);
                     Invoke(() =>
                     {
                         if (rev != "")
@@ -101,15 +105,15 @@ namespace WFclient
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            b.move = '\0';
+            b.move = 'n';
         }
         private void Render()
         {
             g.Clear(Color.Tan);
             g.FillEllipse(myBrush, b.x, b.y, b.r, b.r);
-            if (b.little_balls != null && b.little_balls.Count > 0)
+            if (b.Set_little_balls != null && b.Set_little_balls.Count > 0)
             {
-                foreach (litte_ball smb_i in b.little_balls)
+                foreach (litte_ball smb_i in b.Set_little_balls)
                 {
                     g.FillEllipse(myBrush, smb_i.x, smb_i.y, 10, 10);
                 }

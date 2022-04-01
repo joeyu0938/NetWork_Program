@@ -87,7 +87,7 @@ namespace WinFormsApp1
     
 
         //傳入: Ball的參數 開始傳送data
-        private void SendingData(string ID,ref EndPoint ep,Ball tmp)//Sendingdata 會在新增client 的時候自動再開一個thread
+        private void SendingData(string ID,EndPoint ep,Ball tmp)//Sendingdata 會在新增client 的時候自動再開一個thread
         {
             int cnt = 0;
             byteSendingArray = new byte[10000];
@@ -98,13 +98,13 @@ namespace WinFormsApp1
             Balls control = new Balls();// 要處理的動作
             Ball set_ball = new Ball();
             set_ball.ID = ID;
-            set_ball.s = ep;
             set_ball.Set_little_balls = random_little_ball_set;//初次進入撒現在剩下的小點點
             set_ball.x = tmp.x;
             set_ball.y = tmp.y;
             set_ball.r = tmp.r;
+            set_ball.move = 'n';
             set_ball.Set_Other_ID = dicClient;
-            AddMessage(string.Format("Sending to {0}", set_ball.s.ToString()));
+            AddMessage(string.Format("Sending to {0}", set_ball.ID));
             while (true)
             {
                 if(_pause.WaitOne(Timeout.Infinite) ==false )break;
@@ -142,7 +142,7 @@ namespace WinFormsApp1
                         //位元組轉換
                         byteSendingArray = Encoding.UTF8.GetBytes(jsonstring);
                         //AddMessage(string.Format("Sending to {0}", dicClient[ID].s.ToString()));
-                        socketClient.SendTo(byteSendingArray, set_ball.s);
+                        socketClient.SendTo(byteSendingArray, ep);
                         //從進來的endpoint(紀錄的Ip & port)出去
                         //傳送的json string
                         //很重要!!!
@@ -189,15 +189,14 @@ namespace WinFormsApp1
                     int intReceiveLenght = socketServer.ReceiveFrom(byteReceiveArray, ref ep);
                     string strReceiveStr = Encoding.UTF8.GetString(byteReceiveArray, 0, intReceiveLenght);
                     Ball receive = JsonSerializer.Deserialize<Ball>(strReceiveStr);  //反轉序列化 必須要有一樣且可序列化的class 
-                    receive.s = ep;
                     //接收傳來的json
                     //很重要!!!
-                    
+
                     if (occupy.ContainsKey(ep.ToString())!= true)//如果用戶不存在就新增
                     {
                         if (receive.Dead == true) continue; //如果用戶死亡
-                        AddMessage(string.Format("Add {0}", receive.s));
-                        Thread thSending = new Thread(() => SendingData(receive.s.ToString(), ref ep, receive));
+                        AddMessage(string.Format("Add {0}", ep.ToString()));
+                        Thread thSending = new Thread(() => SendingData(ep.ToString(), ep, receive));
                         occupy[ep.ToString()] = true;
                         thSending.Start();
                         continue;
@@ -209,7 +208,7 @@ namespace WinFormsApp1
                     */
                     //也可以改成傳進來的只有需要的參數 就不用receive 並更新一整個 object
                     
-                    if (receive.Dead == true) dicClient.Remove(receive.s.ToString());
+                    if (receive.Dead == true) dicClient.Remove(ep.ToString());
                     else
                     {
                         

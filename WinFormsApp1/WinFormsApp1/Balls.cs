@@ -9,7 +9,6 @@ namespace Classlibary
     public class Ball // 玩家ball socket傳送的class
     {
        
-        public System.Net.EndPoint s{ get; set; }
         private Dictionary<string, Ball> Other_ID;
         public Dictionary<string, Ball> Set_Other_ID
         {
