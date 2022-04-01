@@ -8,9 +8,21 @@ namespace Classlibary
     [Serializable]
     public class Ball // 玩家ball socket傳送的class
     {
-        public System.Net.EndPoint s { get; set; }
-        public Dictionary<string, Ball> Other_ID { get; set; }
-        public List<litte_ball> little_balls { get; set; }
+       
+        public System.Net.EndPoint s{ get; set; }
+        private Dictionary<string, Ball> Other_ID;
+        public Dictionary<string, Ball> Set_Other_ID
+        {
+            get => Other_ID;
+            set => Other_ID = value;
+            
+        }
+        private List<litte_ball> little_balls;
+        public List<litte_ball> Set_little_balls
+        {
+            get => little_balls;
+            set => little_balls = value;
+        }
         public string ID { get; set; }
         public int x { get; set; }
         public int y { get; set; }
@@ -48,6 +60,7 @@ namespace Classlibary
         {
             Balls control = new Balls();
             //我先用n^2 寫
+            if (other.Count == 0) return;
             foreach(KeyValuePair<string, Ball>  x in other)
             {
                 foreach(KeyValuePair<string,Ball> y in other)
@@ -77,32 +90,33 @@ namespace Classlibary
                 }
             }
         }
-        public void Ball_move(ref Dictionary<string, Ball> dic , string id)//移動
+        public void Ball_move(ref Ball set , string id,ref List<litte_ball> little_ball_set)//移動
         {
-            switch (dic[id].move)
+            if (set == null) return;
+            switch (set.move)
             {
                 case 'w':
-                    dic[id].y -= 1;
+                    set.y -= 1;
                     break;
                 case 'd':
-                    dic[id].x += 1;
+                    set.x += 1;
                     break;
                 case 'a':
-                    dic[id].x -= 1;
+                    set.x -= 1;
                     break;
                 case 's':
-                    dic[id].y += 1;
+                    set.y += 1;
                     break;
                 default:
                     return;
             }
             litte_ball d = new litte_ball();
-            d.x = dic[id].x;
-            d.y = dic[id].y;
-            if (dic[id].little_balls.Contains(d))
+            d.x = set.x;
+            d.y = set.y;
+            if (little_ball_set.Contains(d))
             {
-                dic[id].little_balls.Remove(d);
-                dic[id].r += 3;//半徑變大
+                little_ball_set.Remove(d);
+                set.r += 3;//半徑變大
             }
         }
     }
