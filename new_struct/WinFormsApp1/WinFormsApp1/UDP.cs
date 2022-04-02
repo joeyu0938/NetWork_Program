@@ -90,7 +90,7 @@ namespace WinFormsApp1
         private void SendingData(string ID,EndPoint ep,Ball tmp)//Sendingdata 會在新增client 的時候自動再開一個thread
         {
             int cnt = 0;
-            byteSendingArray = new byte[10000];
+            byteSendingArray = new byte[100000];
                 //定義網路地址
             Socket socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);//定義client 接收樣板
             //傳送資料
@@ -137,7 +137,7 @@ namespace WinFormsApp1
                             //位元組轉換
                             byteSendingArray = Encoding.UTF8.GetBytes(jsonstring);
                             //AddMessage(string.Format("Sending to {0}", dicClient[ID].s.ToString()));
-                            Thread.Sleep(500);
+                            //Thread.Sleep(500);
                             socketClient.SendTo(byteSendingArray, ep);
                             //從進來的endpoint(紀錄的Ip & port)出去
                             //傳送的json string
@@ -167,7 +167,7 @@ namespace WinFormsApp1
             
             if (receiveingFlag)
             {
-                byteReceiveArray = new byte[10000];
+                byteReceiveArray = new byte[100000];
                 iep_Receive = new IPEndPoint(IPAddress.Any, 1001);
                 socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 socketServer.Bind(iep_Receive); // 將endpoint 和 local 綁在一起
@@ -219,7 +219,8 @@ namespace WinFormsApp1
                             dicClient[ep.ToString()].self.y = receive.self.y;
                             dicClient[ep.ToString()].self.r = receive.self.r;
                             dicClient[ep.ToString()].self.move = receive.self.move;
-                            AddMessage(String.Format("receive {0}", strReceiveStr));
+                            //if (receive.self.move !='n')
+                            //    AddMessage(String.Format("receive {0}", receive.self.move));
                         }
                     } //更新客戶們狀態
                 }

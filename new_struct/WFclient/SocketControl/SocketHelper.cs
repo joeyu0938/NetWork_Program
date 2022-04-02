@@ -33,7 +33,6 @@ namespace SocketControl
             BallRef.self = new little_ball();
             BallRef.Other_ID = new Dictionary<string, little_ball>();
             BallRef.little_balls = new List<little_ball>();
-            byteSendingArray = new byte[10000];
 
             EndPoint ep = (EndPoint)iep;
             string jsonstring = JsonSerializer.Serialize(BallRef);

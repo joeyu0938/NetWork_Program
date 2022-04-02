@@ -61,7 +61,7 @@ namespace WFclient
                 DateTime LastRev = DateTime.Now;
                 while (true)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(1);
                     string rev = SocketH.Receive();
                     if (rev != "")
                         b = JsonSerializer.Deserialize<Ball>(rev);
