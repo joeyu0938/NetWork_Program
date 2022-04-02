@@ -47,13 +47,14 @@ namespace SocketControl
             socketServer.Bind(iep_Receive);
             Initialized = true;
         }
-        public void Send()
+        public void Send(ref Ball b_tmp)
         {
+            BallRef = b_tmp;
             if (!Initialized)
                 return;
             EndPoint ep = (EndPoint)iep;
             var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonstring = JsonSerializer.Serialize(BallRef,options);
+            string jsonstring = JsonSerializer.Serialize(BallRef, options);
             byteSendingArray = Encoding.UTF8.GetBytes(jsonstring);
             socketClient.SendTo(byteSendingArray, ep);
         }

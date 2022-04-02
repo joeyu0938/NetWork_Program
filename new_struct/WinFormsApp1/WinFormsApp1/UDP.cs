@@ -81,7 +81,6 @@ namespace WinFormsApp1
             }
             else // 同執行緒
             {
-                
                 this.form.listBox1.Items.Add(sMessage);
             }
         }

@@ -20,6 +20,8 @@ namespace WFclient
         private SolidBrush myBrush = new SolidBrush(System.Drawing.Color.Red);
         private Thread thread_sender;
         private Thread thread_receiver;
+        private Thread thread_render;
+        private int fps;
         public Form1()
         {
             InitializeComponent();
@@ -35,6 +37,7 @@ namespace WFclient
             b.self.y = 50;
             b.self.r = 50;
             b.self.move = 'n';
+            fps = 60;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -42,10 +45,11 @@ namespace WFclient
             {
                 while (true)
                 {
-                    SocketH.Send();
-                    Invoke(() => {
-                        label2.Text = b.self.move.ToString();
-                    });
+                    SocketH.Send(ref b);
+                    //Invoke(() =>
+                    //{
+                    //    label2.Text = b.self.move.ToString();
+                    //});
                 }
             })
             { IsBackground = true }).Start();
@@ -79,7 +83,6 @@ namespace WFclient
         private void Form1_Resize(object sender, EventArgs e)
         {
             button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
-            if(started) Render();
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -87,11 +90,24 @@ namespace WFclient
             SocketH.Init(b);
             button1.Visible = false;
             started = true;
-            Render();
+            if (started)
+            {
+                (thread_render = new(() =>
+                {
+                    while (true)
+                    {
+                        Thread.Sleep(1000 / fps);
+                        Invoke(() =>
+                        {
+                            Render();
+                        });
+                    }
+                })
+                { IsBackground = true }).Start();
+            }
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            lock(b){
                 if (e.KeyCode == Keys.W)
                 {
                     b.self.move = 'w';
@@ -108,7 +124,6 @@ namespace WFclient
                 {
                     b.self.move = 'd';
                 }
-            }
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
