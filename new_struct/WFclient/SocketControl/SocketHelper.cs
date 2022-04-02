@@ -14,11 +14,11 @@ namespace SocketControl
         public Ball BallRef;
 
         bool Initialized = false;
-        Socket socketClient = null;
-        Socket socketServer = null;
-        IPEndPoint iep = null;
-        IPEndPoint iep_Receive = null;
-        private EndPoint ep_sever = null;
+        Socket socketClient;
+        Socket socketServer;
+        IPEndPoint iep;
+        IPEndPoint iep_Receive;
+        //private EndPoint ep_sever;
         private byte[] byteSendingArray = new byte[100000];
         private byte[] byteReceiveArray = new byte[100000];
         public SocketHelper()
@@ -27,15 +27,12 @@ namespace SocketControl
             socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp); 
             socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         }
-        public void Init(Ball ball)
+        public void Init()
         {
             BallRef = new Ball();
             BallRef.self = new little_ball();
             BallRef.Other_ID = new Dictionary<string, little_ball>();
             BallRef.little_balls = new List<little_ball>();
-            BallRef.self = ball.self;
-            BallRef.little_balls = ball.little_balls;
-            BallRef.Other_ID = ball.Other_ID;
             byteSendingArray = new byte[10000];
 
             EndPoint ep = (EndPoint)iep;
@@ -47,11 +44,13 @@ namespace SocketControl
             socketServer.Bind(iep_Receive);
             Initialized = true;
         }
-        public void Send(ref Ball b_tmp)
+        public void Send(ref Ball ball)
         {
-            BallRef = b_tmp;
             if (!Initialized)
                 return;
+            BallRef.self = ball.self;
+            BallRef.little_balls = ball.little_balls;
+            BallRef.Other_ID = ball.Other_ID;
             EndPoint ep = (EndPoint)iep;
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonstring = JsonSerializer.Serialize(BallRef, options);

@@ -46,10 +46,10 @@ namespace WFclient
                 while (true)
                 {
                     SocketH.Send(ref b);
-                    //Invoke(() =>
-                    //{
-                    //    label2.Text = b.self.move.ToString();
-                    //});
+                    Invoke(() =>
+                    {
+                        label2.Text = b.self.move.ToString();
+                    });
                 }
             })
             { IsBackground = true }).Start();
@@ -61,7 +61,7 @@ namespace WFclient
                 DateTime LastRev = DateTime.Now;
                 while (true)
                 {
-                    Thread.Sleep(30);
+                    Thread.Sleep(1000);
                     string rev = SocketH.Receive();
                     if (rev != "")
                         b = JsonSerializer.Deserialize<Ball>(rev);
@@ -87,7 +87,7 @@ namespace WFclient
         private void button1_Click(object sender, EventArgs e)
         {
             //Init my socket
-            SocketH.Init(b);
+            SocketH.Init();
             button1.Visible = false;
             started = true;
             if (started)
