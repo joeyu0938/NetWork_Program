@@ -25,7 +25,6 @@ namespace clienttest
         public Form1()
         {
             InitializeComponent();
-            g = this.CreateGraphics();
             //this.WindowState = FormWindowState.Maximized;
             this.KeyPreview = true; 
             this.DoubleBuffered = true; 

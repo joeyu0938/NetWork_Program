@@ -8,6 +8,7 @@ using Classlibary;
 using SocketControl;
 using System.Text.Json;
 using System.Collections.Generic;
+using SkiaSharp;
 
 namespace WFclient
 {
@@ -22,13 +23,13 @@ namespace WFclient
         private Thread thread_receiver;
         private Thread thread_render;
         private int fps;
+        SKImageInfo sKImageInfo;
         public Form1()
         {
             InitializeComponent();
             //this.WindowState = FormWindowState.Maximized;
             b = new Ball();
             this.TopMost = true;
-            g = this.CreateGraphics();
             button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
             b.self = new little_ball();
             b.Other_ID = new Dictionary<string, little_ball>();
@@ -38,6 +39,10 @@ namespace WFclient
             b.self.r = 50;
             b.self.move = 'n';
             fps = 60;
+            pictureBox1.Location = new Point(0, 0);
+            pictureBox1.Size = new Size(this.Size.Width, this.Size.Height);
+            pictureBox1.SendToBack();   
+            sKImageInfo = new SKImageInfo(this.Size.Width, this.Size.Height);
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -83,6 +88,9 @@ namespace WFclient
         private void Form1_Resize(object sender, EventArgs e)
         {
             button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
+            button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
+            pictureBox1.Size = new Size(this.Size.Width, this.Size.Height);
+            sKImageInfo = new SKImageInfo(this.Size.Width, this.Size.Height);
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -96,11 +104,7 @@ namespace WFclient
                 {
                     while (true)
                     {
-                        Thread.Sleep(1000 / fps);
-                        Invoke(() =>
-                        {
-                            Render();
-                        });
+                        Render();
                     }
                 })
                 { IsBackground = true }).Start();
@@ -127,16 +131,34 @@ namespace WFclient
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
+            b.self.move = 'n';
         }
         private void Render()
         {
-            g.Clear(Color.Tan);
-            g.FillEllipse(myBrush, b.self.x, b.self.y, b.self.r, b.self.r);
-            if (b.little_balls != null && b.little_balls.Count > 0)
+            using (SKSurface surface = SKSurface.Create(sKImageInfo))
             {
-                foreach (little_ball smb_i in b.little_balls)
+                SKCanvas canvas = surface.Canvas;
+                canvas.Clear(SKColors.Tan);
+                using (SKPaint paint = new SKPaint())
                 {
-                    g.FillEllipse(myBrush, smb_i.x, smb_i.y, 10, 10);
+                    paint.Color = SKColors.Blue;
+                    paint.Style = SKPaintStyle.Fill;
+                    canvas.DrawCircle(b.self.x, b.self.y, b.self.r, paint);
+                    paint.Color = SKColors.Red;
+                    if (b.little_balls != null && b.little_balls.Count > 0)
+                    {
+                        foreach (little_ball smb_i in b.little_balls)
+                        {
+                            canvas.DrawCircle(smb_i.x, smb_i.y, 10, paint);
+                        }
+                    }
+                }
+                using (SKImage image = surface.Snapshot())
+                using (SKData data = image.Encode(SKEncodedImageFormat.Png, 100))
+                using (MemoryStream mstream = new MemoryStream(data.ToArray()))
+                {
+                    Bitmap bm = new Bitmap(mstream, false);
+                    pictureBox1.Image = bm;
                 }
             }
         }

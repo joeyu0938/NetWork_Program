@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "TRGl9d+PdZq1FWn1//zmzA2LVB0DO1c/XtrnlO5nsz6jLgujwQYvq+tavA1AZe+5ZZ+m1p7PCSUkHiN5JrBskw==",
+  "dgSpecHash": "Ez852WQFLM7VDNSofOnWB7SXBLoxIImRNHRbMvKtz3NIcPX9NVUxbFYFyfHl36bCMRSEd6PR9jpRdekV8pHbGw==",
   "success": true,
   "projectFilePath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\SocketControl.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\dp\\.nuget\\packages\\skiasharp\\2.80.3\\skiasharp.2.80.3.nupkg.sha512",
+    "C:\\Users\\dp\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+  ],
   "logs": []
 }
