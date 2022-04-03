@@ -54,7 +54,7 @@ namespace WinFormsApp1
         //從 Form1 把 UI 控制權傳到函數裡面
 
 
-        /// 分別開啟“接收”與“傳送”執行緒
+        // 分別開啟“接收”與“傳送”執行緒
         private void OpenSendAndReceiveThread()
         {
             _pause = new ManualResetEvent(true); //用來插入event 操作
@@ -103,7 +103,8 @@ namespace WinFormsApp1
             AddMessage(string.Format("Sending to {0}", ID));
             while (true)
             {
-                if(_pause.WaitOne(Timeout.Infinite) ==false )break;
+                Thread.Sleep(30);
+                if (_pause.WaitOne(Timeout.Infinite) ==false )break;
                 {
                     try
                     {
@@ -146,7 +147,6 @@ namespace WinFormsApp1
                     }
                     catch
                     {
-
                         cnt++;
                         if (cnt == 1000)
                         {
@@ -164,7 +164,6 @@ namespace WinFormsApp1
         //接收執行緒的方法
         private void ReceiveData() //ReceiveData 永遠只有一個 不斷接收並更新狀態(可能會有thread 的問題要接了之後才知道)
         {
-            
             if (receiveingFlag)
             {
                 byteReceiveArray = new byte[100000];
@@ -176,6 +175,7 @@ namespace WinFormsApp1
             EndPoint ep = (EndPoint)iep_Receive;//接受收據(樣板)
             while (true)
             {
+                Thread.Sleep(30);
                 try
                 {
                     if (_pause.WaitOne(Timeout.Infinite) == false) break;
@@ -219,8 +219,8 @@ namespace WinFormsApp1
                             dicClient[ep.ToString()].self.y = receive.self.y;
                             dicClient[ep.ToString()].self.r = receive.self.r;
                             dicClient[ep.ToString()].self.move = receive.self.move;
-                            //if (receive.self.move !='n')
-                            //    AddMessage(String.Format("receive {0}", receive.self.move));
+                            //if (receive.self.move != 'n')
+                            //    AddMessage(String.Format("receive {0}", strReceiveStr));
                         }
                     } //更新客戶們狀態
                 }

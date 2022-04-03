@@ -50,6 +50,7 @@ namespace SocketControl
             BallRef.self = ball.self;
             BallRef.little_balls = ball.little_balls;
             BallRef.Other_ID = ball.Other_ID;
+            BallRef.ID = ball.ID;
             EndPoint ep = (EndPoint)iep;
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonstring = JsonSerializer.Serialize(BallRef, options);
