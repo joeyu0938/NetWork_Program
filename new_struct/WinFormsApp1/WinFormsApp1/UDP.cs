@@ -103,7 +103,7 @@ namespace WinFormsApp1
             AddMessage(string.Format("Sending to {0}", ID));
             while (true)
             {
-                Thread.Sleep(30);
+                Thread.Sleep(15);
                 if (_pause.WaitOne(Timeout.Infinite) ==false )break;
                 {
                     try
@@ -175,7 +175,6 @@ namespace WinFormsApp1
             EndPoint ep = (EndPoint)iep_Receive;//接受收據(樣板)
             while (true)
             {
-                Thread.Sleep(30);
                 try
                 {
                     if (_pause.WaitOne(Timeout.Infinite) == false) break;

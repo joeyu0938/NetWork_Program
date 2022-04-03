@@ -50,7 +50,7 @@ namespace WFclient
             {
                 while (true)
                 {
-                    Thread.Sleep(30);
+                    Thread.Sleep(15);
                     SocketH.Send(ref b);
                     Invoke(() =>
                     {
@@ -63,11 +63,9 @@ namespace WFclient
             (thread_receiver = new(() =>
             {
                 int count = 0;
-                Thread.Sleep(300);
                 DateTime LastRev = DateTime.Now;
                 while (true)
                 {
-                    Thread.Sleep(30);
                     string rev = SocketH.Receive();
                     if (rev != "")
                         b = JsonSerializer.Deserialize<Ball>(rev);
