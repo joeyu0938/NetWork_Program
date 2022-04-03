@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "HppYti+8TWGRnfWwExJ8Cusd0RYkHav3dKwxFOKh0lw6kl05RbT4nNALd/x/M2qwzUGJ76rstuofdn+xU8wldw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\clienttest\\clienttest\\clienttest.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dp\\.nuget\\packages\\skiasharp\\2.80.3\\skiasharp.2.80.3.nupkg.sha512",
+    "C:\\Users\\dp\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+  ],
+  "logs": []
+}

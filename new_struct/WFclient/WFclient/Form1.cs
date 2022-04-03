@@ -108,22 +108,22 @@ namespace WFclient
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-                if (e.KeyCode == Keys.W)
-                {
-                    b.self.move = 'w';
-                }
-                else if (e.KeyCode == Keys.A)
-                {
-                    b.self.move = 'a';
-                }
-                else if (e.KeyCode == Keys.S)
-                {
-                    b.self.move = 's';
-                }
-                else if (e.KeyCode == Keys.D)
-                {
-                    b.self.move = 'd';
-                }
+            if (e.KeyCode == Keys.W)
+            {
+                b.self.move = 'w';
+            }
+            else if (e.KeyCode == Keys.A)
+            {
+                b.self.move = 'a';
+            }
+            else if (e.KeyCode == Keys.S)
+            {
+                b.self.move = 's';
+            }
+            else if (e.KeyCode == Keys.D)
+            {
+                b.self.move = 'd';
+            }
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {

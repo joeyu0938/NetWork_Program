@@ -8,19 +8,19 @@
     "net6.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\dragonphoenix\\.nuget\\packages\\": {}
+    "C:\\Users\\dp\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WinFormsApp1\\WinFormsApp1\\WinFormsApp1.csproj",
+      "projectUniqueName": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WinFormsApp1\\WinFormsApp1\\WinFormsApp1.csproj",
       "projectName": "WinFormsApp1",
-      "projectPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WinFormsApp1\\WinFormsApp1\\WinFormsApp1.csproj",
-      "packagesPath": "C:\\Users\\dragonphoenix\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WinFormsApp1\\WinFormsApp1\\obj\\",
+      "projectPath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WinFormsApp1\\WinFormsApp1\\WinFormsApp1.csproj",
+      "packagesPath": "C:\\Users\\dp\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WinFormsApp1\\WinFormsApp1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\dragonphoenix\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dp\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
