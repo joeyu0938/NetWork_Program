@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "euqp3shNGt5+XghDEPYb2oXdFFBO8317N5/eMGdkfBF7QdPiAz3Sc392WuvUN2uhITKciSsGV1xHqv4Dq0XsTA==",
+  "dgSpecHash": "xbRo19mMADToaCxXCT6JWRU/tKKm+BLcJivE/XuxpXrpR0OKrfzNGNy2fU7P9KYI0mKOBwWmaYmfna0boZd1CQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\new_struct\\WFclient\\WFclient\\WFclient.csproj",
+  "projectFilePath": "C:\\Users\\余炘璋\\Desktop\\T\\new_struct\\WFclient\\WFclient\\WFclient.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\dp\\.nuget\\packages\\skiasharp\\2.80.3\\skiasharp.2.80.3.nupkg.sha512",
-    "C:\\Users\\dp\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+    "C:\\Users\\余炘璋\\.nuget\\packages\\skiasharp\\2.80.3\\skiasharp.2.80.3.nupkg.sha512",
+    "C:\\Users\\余炘璋\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
   ],
   "logs": []
 }

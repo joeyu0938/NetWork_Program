@@ -14,9 +14,9 @@ namespace WinFormsApp1
 
     partial class UDPCommunication : Form1
     {   //宣告類別變數
-        Dictionary<string, bool> occupy;
         Dictionary<string, Ball> dicClient;//連線的客戶端集合
         Dictionary<string, little_ball> other_Client;
+        List<string> dead;
         List<little_ball> random_little_ball_set;
         bool receiveingFlag = true;
         IPEndPoint iep_Receive = null;
@@ -47,8 +47,8 @@ namespace WinFormsApp1
             form = u;
             form.listBox1.Items.Add("---非同步通訊，A---");
             dicClient= new Dictionary<string,Ball>();
-            occupy = new Dictionary<string, bool>();
             other_Client = new Dictionary<string, little_ball>();
+            dead = new List<string>();
             OpenSendAndReceiveThread();
         }
         //從 Form1 把 UI 控制權傳到函數裡面
@@ -87,8 +87,9 @@ namespace WinFormsApp1
     
 
         //傳入: Ball的參數 開始傳送data
-        private void SendingData(string ID,EndPoint ep,Ball tmp)//Sendingdata 會在新增client 的時候自動再開一個thread
+        private void SendingData(string ID,EndPoint ep)//Sendingdata 會在新增client 的時候自動再開一個thread
         {
+            
             int cnt = 0;
             byteSendingArray = new byte[100000];
                 //定義網路地址
@@ -96,8 +97,15 @@ namespace WinFormsApp1
             //傳送資料
             AddMessage("傳送");
             Balls control = new Balls();// 要處理的動作
-            dicClient[ID].self = tmp.self;
-            other_Client.Add(ep.ToString(), dicClient[ID].self);
+            if (dead.Contains(ep.ToString())) return;
+            try
+            {
+                other_Client.Add(ep.ToString(), dicClient[ID].self);
+            }
+            catch
+            {
+                return;
+            }
             dicClient[ID].Other_ID = other_Client;
             dicClient[ID].ID = ID;
             AddMessage(string.Format("Sending to {0}", ID));
@@ -116,7 +124,7 @@ namespace WinFormsApp1
                             //設定共有變數
                             dicClient[ID].Other_ID = other_Client;
                             control.Ball_move(ref dicClient, ID, ref random_little_ball_set);//如果client 端要處理就不用了，如果沒有的話把 上下左右放進來Ball (u,d,l,r)
-                            control.Count_collision(ref dicClient, ref random_little_ball_set);//如果client 端要處理就不用了，我函式再改成統合狀態就好
+                            control.Count_collision(ref dicClient, ID, ref random_little_ball_set);//如果client 端要處理就不用了，我函式再改成統合狀態就好
                             dicClient[ID].little_balls = random_little_ball_set;
                             other_Client[ID].x = dicClient[ID].self.x;
                             other_Client[ID].y = dicClient[ID].self.y;
@@ -150,7 +158,7 @@ namespace WinFormsApp1
                         cnt++;
                         if (cnt == 1000)
                         {
-                            AddMessage(string.Format("Cannot entry :{0}", occupy[ID].ToString())); //server報錯
+                            AddMessage(string.Format("Cannot entry :{0}", dicClient[ID].ToString())); //server報錯
                             dicClient.Remove(ID);
                             other_Client.Remove(ID);
                             break;
@@ -189,12 +197,16 @@ namespace WinFormsApp1
 
                     if (dicClient.ContainsKey(ep.ToString()) != true)//如果用戶不存在就新增
                     {
+                        Random r = new Random();
                         AddMessage(string.Format("Add {0}", ep.ToString()));
                         dicClient[ep.ToString()] = new Ball();
                         dicClient[ep.ToString()].Other_ID = new Dictionary<string, little_ball>();
                         dicClient[ep.ToString()].little_balls = new List<little_ball>();
                         dicClient[ep.ToString()].self = new little_ball();
-                        Thread thSending = new Thread(() => SendingData(ep.ToString(), ep, receive));
+                        dicClient[ep.ToString()].self.x = r.Next(0, 1000);
+                        dicClient[ep.ToString()].self.y = r.Next(0, 1000);
+                        dicClient[ep.ToString()].self.r = 50;
+                        Thread thSending = new Thread(() => SendingData(ep.ToString(), ep));
                         thSending.Start();
                         continue;
                     }
@@ -209,11 +221,13 @@ namespace WinFormsApp1
                     {
                         dicClient.Remove(ep.ToString());
                         other_Client.Remove(ep.ToString());
+                        dead.Add(ep.ToString());
                     }
                     else
                     {
                         lock (dicClient)
                         {
+                            if (receive.self.x == 0 && receive.self.y == 0) continue;
                             dicClient[ep.ToString()].self.x = receive.self.x;
                             dicClient[ep.ToString()].self.y = receive.self.y;
                             dicClient[ep.ToString()].self.r = receive.self.r;

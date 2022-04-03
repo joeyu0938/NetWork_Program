@@ -9,7 +9,6 @@ using SocketControl;
 using System.Text.Json;
 using System.Collections.Generic;
 using SkiaSharp;
-
 namespace WFclient
 {
     public partial class Form1 : Form
@@ -34,14 +33,14 @@ namespace WFclient
             b.self = new little_ball();
             b.Other_ID = new Dictionary<string, little_ball>();
             b.little_balls = new List<little_ball>();
-            b.self.x = 50;
-            b.self.y = 50;
-            b.self.r = 50;
             b.self.move = 'n';
+            b.self.x = 0;
+            b.self.y = 0;
+            b.self.r = 0;
             fps = 60;
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Size = new Size(this.Size.Width, this.Size.Height);
-            pictureBox1.SendToBack();   
+            pictureBox1.SendToBack();
             sKImageInfo = new SKImageInfo(this.Size.Width, this.Size.Height);
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -50,7 +49,7 @@ namespace WFclient
             {
                 while (true)
                 {
-                    Thread.Sleep(15);
+                    Thread.Sleep(30);
                     SocketH.Send(ref b);
                     Invoke(() =>
                     {
@@ -143,6 +142,16 @@ namespace WFclient
                     paint.Color = SKColors.Blue;
                     paint.Style = SKPaintStyle.Fill;
                     canvas.DrawCircle(b.self.x, b.self.y, b.self.r, paint);
+                    if (b.Other_ID.Count() != null)
+                    {
+                        Random random = new Random();
+                        foreach (string other in b.Other_ID.Keys)
+                        {
+                            if (other == b.ID) continue;
+                            paint.Color = SKColors.Green;
+                            canvas.DrawCircle(b.Other_ID[other].x, b.Other_ID[other].y, b.Other_ID[other].r, paint);
+                        }
+                    }
                     paint.Color = SKColors.Red;
                     if (b.little_balls != null && b.little_balls.Count > 0)
                     {

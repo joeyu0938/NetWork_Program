@@ -44,69 +44,66 @@ namespace Classlibary
             }
         }
         //最一開始才要用
-        public void Count_collision(ref Dictionary<string, Ball> other,ref List<little_ball> little_ball_set)
+        public void Count_collision(ref Dictionary<string, Ball> other, string ID, ref List<little_ball> little_ball_set)
         {
             Balls control = new Balls();
             //我先用n^2 寫
-            if (other.Count == 0) return;
-            foreach(KeyValuePair<string, Ball>  x in other)
+            if (other[ID].self.Dead == true) return;
+            foreach (KeyValuePair<string, Ball> y in other)
             {
-                foreach(KeyValuePair<string,Ball> y in other)
+                if (other[ID].ID == y.Key) continue;
+                if (Math.Pow(Math.Abs(other[ID].self.x - y.Value.self.x), 2) + Math.Pow(Math.Abs(other[ID].self.y - y.Value.self.y), 2) < Math.Pow(other[ID].self.r + y.Value.self.r, 2))
                 {
-                    if (x.Key == y.Key) continue;
-                    if(Math.Pow(Math.Abs(x.Value.self.x - y.Value.self.x),2) + Math.Pow(Math.Abs(x.Value.self.y - y.Value.self.y),2) < Math.Pow(x.Value.self.r + y.Value.self.r, 2))
+                    other[ID].self.collision = true;
+                    y.Value.self.collision = true;
+                    if (other[ID].self.r > y.Value.self.r)
                     {
-                        x.Value.self.collision = true;
-                        y.Value.self.collision = true;
-                        if (x.Value.self.r > y.Value.self.r)
-                        {
-                            y.Value.self.Dead = true;
-                            little_ball c =new little_ball();
-                            c.x = y.Value.self.x;
-                            c.y = y.Value.self.y;
-                            c.r = 1;
-                            little_ball_set.Add(c);
-                        }
-                        else
-                        {
-                            x.Value.self.Dead = true;
-                            little_ball c = new little_ball();
-                            c.x = x.Value.self.x;
-                            c.y = x.Value.self.y;
-                            c.r = 1;
-                            little_ball_set.Add(c);
-                        }
+                        y.Value.self.Dead = true;
+                        //little_ball c = new little_ball();
+                        //c.x = y.Value.self.x;
+                        //c.y = y.Value.self.y;
+                        //c.r = 1;
+                        //little_ball_set.Add(c);
+                    }
+                    else if (other[ID].self.r < y.Value.self.r)
+                    {
+                        other[ID].self.Dead = true;
+                        //little_ball c = new little_ball();
+                        //c.x = other[ID].self.x;
+                        //c.y = other[ID].self.y;
+                        //c.r = 1;
+                        //little_ball_set.Add(c);
                     }
                 }
             }
         }
-        public void Ball_move(ref Dictionary<string,Ball> set, string id, ref List<little_ball> little_ball_set)//移動
+        public void Ball_move(ref Dictionary<string, Ball> set, string id, ref List<little_ball> little_ball_set)//移動
         {
             if (set == null) return;
             switch (set[id].self.move)
             {
                 case 'w':
-                    set[id].self.y-= 1;
+                    set[id].self.y -= 5;
                     break;
                 case 'd':
-                    set[id].self.x += 1;
+                    set[id].self.x += 5;
                     break;
                 case 'a':
-                    set[id].self.x-= 1;
+                    set[id].self.x -= 5;
                     break;
                 case 's':
-                    set[id].self.y += 1;
+                    set[id].self.y += 5;
                     break;
                 default:
                     return;
             }
-            little_ball d = new little_ball();
-            d.x = set[id].self.x;
-            d.y = set[id].self.y;
-            if (little_ball_set.Contains(d))
+            for (int i = little_ball_set.Count - 1; i >= 0; i--)
             {
-                little_ball_set.Remove(d);
-                set[id].self.r += 3;//半徑變大
+                if (Math.Pow(Math.Abs(set[id].self.x - little_ball_set[i].x), 2) + Math.Pow(Math.Abs(set[id].self.y - little_ball_set[i].y), 2) < Math.Pow(set[id].self.r + little_ball_set[i].r, 2))
+                {
+                    set[id].self.r += 5;
+                    little_ball_set.Remove(little_ball_set[i]);
+                }
             }
         }
     }
