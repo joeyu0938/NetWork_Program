@@ -13,6 +13,8 @@ namespace WFclient
 {
     public partial class Form1 : Form
     {
+        private float formsize_x;
+        private float formsize_y;
         bool started = false;
         Ball b;
         SocketHelper SocketH = new SocketHelper();
@@ -21,17 +23,11 @@ namespace WFclient
         private Thread thread_sender;
         private Thread thread_receiver;
         private Thread thread_render;
-        private Thread thread_checker;
-        private int fps;
         SKImageInfo sKImageInfo;
         public Form1()
         {
             InitializeComponent();
-            //this.WindowState = FormWindowState.Maximized;
             b = new Ball();
-            this.TopMost = true;
-            button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
-            button2.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
             b.self = new little_ball();
             b.Other_ID = new Dictionary<string, little_ball>();
             b.little_balls = new List<little_ball>();
@@ -40,16 +36,20 @@ namespace WFclient
             b.self.y = 0;
             b.self.r = 0;
             b.self.Dead = false;
-            fps = 60;
+            button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
+            button2.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
+            button2.Visible = false;
+            button2.Enabled = false;
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Size = new Size(this.Size.Width, this.Size.Height);
             pictureBox1.SendToBack();
             sKImageInfo = new SKImageInfo(this.Size.Width, this.Size.Height);
-            button2.Visible = false;
-            button2.Enabled = false;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            formsize_x = this.Width;
+            formsize_y = this.Height;
+            setTag(this);
             (thread_sender = new(() =>
             {
                 while (true)
@@ -68,6 +68,8 @@ namespace WFclient
             (thread_receiver = new(() =>
             {
                 int count = 0;
+                double ping = 0;
+                DateTime dateTime = DateTime.Now;
                 DateTime LastRev = DateTime.Now;
                 while (true)
                 {
@@ -80,9 +82,12 @@ namespace WFclient
                         if (rev != "")
                         {
                             count++;
-                            label1.Text = string.Format("cnt:{0} ping:{1} ms", count.ToString(),
-                                                    (DateTime.Now - LastRev).TotalMilliseconds);
-
+                            if ((DateTime.Now - dateTime).TotalMilliseconds > 500)
+                            {
+                                dateTime = DateTime.Now;
+                                ping = (dateTime - LastRev).TotalMilliseconds;
+                            }
+                            label1.Text = string.Format("cnt:{0} ping:{1} ms", count.ToString(), ping);
                             LastRev = DateTime.Now;
                         }
                     });
@@ -93,9 +98,9 @@ namespace WFclient
         }
         private void Form1_Resize(object sender, EventArgs e)
         {
-            button1.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
-            button2.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
-            pictureBox1.Size = new Size(this.Size.Width, this.Size.Height);
+            float new_x = (this.Width) / formsize_x;
+            float new_y = (this.Height) / formsize_y;
+            setControls(new_x, new_y, this);
             sKImageInfo = new SKImageInfo(this.Size.Width, this.Size.Height);
         }
         private void button1_Click(object sender, EventArgs e)
@@ -223,6 +228,37 @@ namespace WFclient
                 }
             }
         }
+        private void setTag(Control cons)
+        {
+            foreach (Control con in cons.Controls)
+            {
+                con.Tag = con.Width + ":" + con.Height + ":" + con.Left + ":" + con.Top + ":" + con.Font.Size;
+                if (con.Controls.Count > 0)
+                    setTag(con);
+            }
+        }
+        private void setControls(float newx, float newy, Control cons)
+        {
+            //遍歷窗體中的控制項，重新設置控制項的值
+            foreach (Control con in cons.Controls)
+            {
 
+                string[] mytag = con.Tag.ToString().Split(new char[] { ':' });//獲取控制項的Tag屬性值，並分割後存儲字元串數組
+                float a = System.Convert.ToSingle(mytag[0]) * newx;//根據窗體縮放比例確定控制項的值，寬度
+                con.Width = (int)a;//寬度
+                a = System.Convert.ToSingle(mytag[1]) * newy;//高度
+                con.Height = (int)(a);
+                a = System.Convert.ToSingle(mytag[2]) * newx;//左邊距離
+                con.Left = (int)(a);
+                a = System.Convert.ToSingle(mytag[3]) * newy;//上邊緣距離
+                con.Top = (int)(a);
+                Single currentSize = System.Convert.ToSingle(mytag[4]) * newy;//字體大小
+                con.Font = new Font(con.Font.Name, currentSize, con.Font.Style, con.Font.Unit);
+                if (con.Controls.Count > 0)
+                {
+                    setControls(newx, newy, con);
+                }
+            }
+        }
     }
 }
