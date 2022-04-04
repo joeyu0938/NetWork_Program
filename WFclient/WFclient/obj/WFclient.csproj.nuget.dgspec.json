@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\WFclient\\WFclient.csproj": {}
+    "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\WFclient\\WFclient.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj": {
+    "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj",
+        "projectUniqueName": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj",
         "projectName": "SocketControl",
-        "projectPath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj",
-        "packagesPath": "C:\\Users\\dp\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\obj\\",
+        "projectPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj",
+        "packagesPath": "C:\\Users\\dragonphoenix\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\dp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dragonphoenix\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -58,17 +58,17 @@
         }
       }
     },
-    "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\WFclient\\WFclient.csproj": {
+    "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\WFclient\\WFclient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\WFclient\\WFclient.csproj",
+        "projectUniqueName": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\WFclient\\WFclient.csproj",
         "projectName": "WFclient",
-        "projectPath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\WFclient\\WFclient.csproj",
-        "packagesPath": "C:\\Users\\dp\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\WFclient\\obj\\",
+        "projectPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\WFclient\\WFclient.csproj",
+        "packagesPath": "C:\\Users\\dragonphoenix\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\WFclient\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\dp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dragonphoenix\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -82,8 +82,8 @@
           "net6.0-windows7.0": {
             "targetAlias": "net6.0-windows",
             "projectReferences": {
-              "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj": {
-                "projectPath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj"
+              "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj": {
+                "projectPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj"
               }
             }
           }

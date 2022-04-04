@@ -18,6 +18,9 @@ namespace Classlibary
     {
         public int x { get; set; }
         public int y { get; set; }
+        public int col_r { get; set; }
+        public int col_g { get; set; }
+        public int col_b { get; set; }
         public int r { get; set; }
         public bool collision { get; set; }
         public bool Eat { get; set; }
@@ -34,6 +37,9 @@ namespace Classlibary
             for(int i = 0; i < number; i++)
             {
                 little_ball tmp = new little_ball();
+                tmp.col_r = random.Next(255);
+                tmp.col_g = random.Next(255);
+                tmp.col_b = random.Next(255);
                 tmp.x = random.Next(0, 1500);
                 tmp.y = random.Next(0, 850);
                 if (!l.Contains(tmp))

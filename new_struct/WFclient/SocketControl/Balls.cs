@@ -18,6 +18,9 @@ namespace Classlibary
     {
         public int x { get; set; }
         public int y { get; set; }
+        public int col_r { get; set; }
+        public int col_g { get; set; }
+        public int col_b { get; set; }
         public int r { get; set; }
         public bool collision { get; set; }
         public bool Eat { get; set; }

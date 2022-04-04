@@ -58,3 +58,15 @@ C:\Users\余炘璋\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj
 C:\Users\余炘璋\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\refint\SocketControl.dll
 C:\Users\余炘璋\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\SocketControl.pdb
 C:\Users\余炘璋\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\ref\SocketControl.dll
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\bin\Debug\net6.0\SocketControl.deps.json
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\bin\Debug\net6.0\SocketControl.dll
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\bin\Debug\net6.0\SocketControl.pdb
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\SocketControl.csproj.AssemblyReference.cache
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\SocketControl.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\SocketControl.AssemblyInfoInputs.cache
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\SocketControl.AssemblyInfo.cs
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\SocketControl.csproj.CoreCompileInputs.cache
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\SocketControl.dll
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\refint\SocketControl.dll
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\SocketControl.pdb
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\SocketControl\obj\Debug\net6.0\ref\SocketControl.dll

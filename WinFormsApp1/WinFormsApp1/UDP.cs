@@ -84,7 +84,23 @@ namespace WinFormsApp1
                 this.form.listBox1.Items.Add(sMessage);
             }
         }
-    
+        private void Addlabel2(string sMessage)
+        {
+            if (this.form.listBox1.InvokeRequired) // 若非同執行緒
+            {
+                UPDATE_UI del = new UPDATE_UI(AddMessage); //利用委派執行
+                this.form.listBox1.Invoke(del, sMessage);//從操作主緒的UI
+                this.form.Invoke(() =>
+                {
+                    form.listBox1.TopIndex = form.listBox1.Items.Count - 1;
+                });
+            }
+            else // 同執行緒
+            {
+
+                this.form.listBox1.Items.Add(sMessage);
+            }
+        }
 
         //傳入: Ball的參數 開始傳送data
         private void SendingData(string ID,EndPoint ep,Ball tmp)//Sendingdata 會在新增client 的時候自動再開一個thread
@@ -131,6 +147,9 @@ namespace WinFormsApp1
                             dicClient[ID] = set_ball;
                         }
 
+                        Invoke(() =>{
+                            label2.Text = set_ball.move.ToString();
+                        });
                         /*lock (_thisLock) 萬一共用變數有問題
                         {
                             //TODO

@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\dp\\.nuget\\packages\\": {}
+    "C:\\Users\\dragonphoenix\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj",
+      "projectUniqueName": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj",
       "projectName": "SocketControl",
-      "projectPath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj",
-      "packagesPath": "C:\\Users\\dp\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dp\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\obj\\",
+      "projectPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\SocketControl.csproj",
+      "packagesPath": "C:\\Users\\dragonphoenix\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\WFclient\\SocketControl\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\dp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dragonphoenix\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
