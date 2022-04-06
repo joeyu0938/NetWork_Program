@@ -78,23 +78,23 @@ namespace Classlibary
             switch (set.self.move)
             {
                 case 'w':
-                    set.self.y -= 1;
+                    set.self.y -= 3;
                     break;
                 case 'd':
-                    set.self.x += 1;
+                    set.self.x += 3;
                     break;
                 case 'a':
-                    set.self.x -= 1;
+                    set.self.x -= 3;
                     break;
                 case 's':
-                    set.self.y += 1;
+                    set.self.y += 3;
                     break;
                 default:
                     return;
             }
             if (set.self.x < 0) set.self.x = 0;
             if (set.self.x > 1920) set.self.x = 1920;
-            if (set.self.y < 0) set.self.x = 0;
+            if (set.self.y < 0) set.self.y = 0;
             if (set.self.y > 1080) set.self.y = 1080;
             for (int i = set.little_balls.Count - 1; i >= 0; i--)
             {

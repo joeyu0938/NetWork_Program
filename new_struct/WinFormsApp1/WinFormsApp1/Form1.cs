@@ -53,6 +53,11 @@ namespace WinFormsApp1
             listBox1.Items.Add("恢復連線");
             u.Resume(this);
         }
+        
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            System.Environment.Exit(0);
+        }
     }
 
 }

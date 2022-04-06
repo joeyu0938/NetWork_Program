@@ -106,6 +106,10 @@ namespace WFclient
                         string rev = SocketH.Receive();
                         if (rev != "")
                             b = JsonSerializer.Deserialize<Ball>(rev);
+                        if (rev == "")
+                        {
+                            SocketH.Init(); 
+                        }
                         Invoke(() =>
                         {
                             if (rev != "")
@@ -142,6 +146,7 @@ namespace WFclient
                 })
                 { IsBackground = true }).Start();
             }
+            SocketH.Send(ref b);
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -241,10 +246,13 @@ namespace WFclient
                             foreach (string other in b.Other_ID.Keys)
                             {
                                 if (other == b.ID) continue;
+                                if (b.Other_ID[other].Dead == true) continue;
                                 paint.Color = SKColors.Green;
                                 textPaint.TextSize = b.Other_ID[other].r;
                                 canvas.DrawCircle(b.Other_ID[other].x, b.Other_ID[other].y, b.Other_ID[other].r, paint);
-                                canvas.DrawText((b.Other_ID[other].r/2).ToString(), b.Other_ID[other].x - (b.Other_ID[other].r / 2), b.Other_ID[other].y + (b.Other_ID[other].r / 2), textPaint);
+                                text_x = b.Other_ID[other].x - (textPaint.MeasureText(b.Other_ID[other].r.ToString()) / 2);
+                                text_y = b.Other_ID[other].y + (textPaint.TextSize / 2);
+                                canvas.DrawText(b.Other_ID[other].r.ToString(), text_x, text_y, textPaint);
                             }
                         }
                         if (b.little_balls != null && b.little_balls.Count > 0)
@@ -301,6 +309,8 @@ namespace WFclient
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
+            b.self.Dead = true;
+            SocketH.Send(ref b);
             started = false;
             System.Environment.Exit(0);
         }

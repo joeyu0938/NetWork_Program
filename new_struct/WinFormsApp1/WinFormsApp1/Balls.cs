@@ -34,7 +34,7 @@ namespace Classlibary
         public void random_little_balls(int number, ref List<little_ball> l)
         {
             Random random = new Random();
-            for(int i = 0; i < number; i++)
+            for(int i = l.Count; i < number; i++)
             {
                 little_ball tmp = new little_ball();
                 tmp.col_r = random.Next(255);
@@ -65,20 +65,10 @@ namespace Classlibary
                     if (other[ID].self.r > y.Value.self.r)
                     {
                         y.Value.self.Dead = true;
-                        //little_ball c = new little_ball();
-                        //c.x = y.Value.self.x;
-                        //c.y = y.Value.self.y;
-                        //c.r = 1;
-                        //little_ball_set.Add(c);
                     }
                     else if (other[ID].self.r < y.Value.self.r)
                     {
                         other[ID].self.Dead = true;
-                        //little_ball c = new little_ball();
-                        //c.x = other[ID].self.x;
-                        //c.y = other[ID].self.y;
-                        //c.r = 1;
-                        //little_ball_set.Add(c);
                     }
                 }
             }

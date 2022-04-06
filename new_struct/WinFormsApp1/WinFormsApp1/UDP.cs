@@ -98,14 +98,6 @@ namespace WinFormsApp1
             AddMessage("傳送");
             Balls control = new Balls();// 要處理的動作
             if (dead.Contains(ep.ToString())) return;
-            try
-            {
-                other_Client.Add(ep.ToString(), dicClient[ID].self);
-            }
-            catch
-            {
-                return;
-            }
             dicClient[ID].Other_ID = other_Client;
             dicClient[ID].ID = ID;
             AddMessage(string.Format("Sending to {0}", ID));
@@ -125,6 +117,7 @@ namespace WinFormsApp1
                             dicClient[ID].Other_ID = other_Client;
                             //control.Ball_move(ref dicClient, ID, ref random_little_ball_set);//如果client 端要處理就不用了，如果沒有的話把 上下左右放進來Ball (u,d,l,r)
                             control.Count_collision(ref dicClient, ID, ref random_little_ball_set);//如果client 端要處理就不用了，我函式再改成統合狀態就好
+                            control.random_little_balls(little_balls_number, ref random_little_ball_set);
                             dicClient[ID].little_balls = random_little_ball_set;
                             other_Client[ID].x = dicClient[ID].self.x;
                             other_Client[ID].y = dicClient[ID].self.y;
@@ -156,7 +149,7 @@ namespace WinFormsApp1
                     catch
                     {
                         cnt++;
-                        if (cnt == 1000)
+                        if (cnt == 100)
                         {
                             AddMessage(string.Format("Cannot entry :{0}", dicClient[ID].ToString())); //server報錯
                             dicClient.Remove(ID);
@@ -183,6 +176,7 @@ namespace WinFormsApp1
             EndPoint ep = (EndPoint)iep_Receive;//接受收據(樣板)
             while (true)
             {
+                //Thread.Sleep(2);
                 try
                 {
                     if (_pause.WaitOne(Timeout.Infinite) == false) break;
@@ -192,23 +186,27 @@ namespace WinFormsApp1
                     int intReceiveLenght = socketServer.ReceiveFrom(byteReceiveArray, ref ep);
                     string strReceiveStr = Encoding.UTF8.GetString(byteReceiveArray, 0, intReceiveLenght);
                     Ball receive = JsonSerializer.Deserialize<Ball>(strReceiveStr);  //反轉序列化 必須要有一樣且可序列化的class 
-                    //接收傳來的json
-                    //很重要!!!
+                                                                                     //接收傳來的json
+                                                                                     //很重要!!!
 
-                    if (dicClient.ContainsKey(ep.ToString()) != true)//如果用戶不存在就新增
+                    lock (ep)
                     {
-                        Random r = new Random();
-                        AddMessage(string.Format("Add {0}", ep.ToString()));
-                        dicClient[ep.ToString()] = new Ball();
-                        dicClient[ep.ToString()].Other_ID = new Dictionary<string, little_ball>();
-                        dicClient[ep.ToString()].little_balls = new List<little_ball>();
-                        dicClient[ep.ToString()].self = new little_ball();
-                        dicClient[ep.ToString()].self.x = r.Next(0, 1920);
-                        dicClient[ep.ToString()].self.y = r.Next(0, 1080);
-                        dicClient[ep.ToString()].self.r = 50;
-                        Thread thSending = new Thread(() => SendingData(ep.ToString(), ep));
-                        thSending.Start();
-                        continue;
+                        if (dicClient.ContainsKey(ep.ToString()) != true)//如果用戶不存在就新增
+                        {
+                            Random r = new Random();
+                            AddMessage(string.Format("Add {0}", ep.ToString()));
+                            dicClient[ep.ToString()] = new Ball();
+                            dicClient[ep.ToString()].Other_ID = new Dictionary<string, little_ball>();
+                            dicClient[ep.ToString()].little_balls = new List<little_ball>();
+                            dicClient[ep.ToString()].self = new little_ball();
+                            dicClient[ep.ToString()].self.x = r.Next(0, 1920);
+                            dicClient[ep.ToString()].self.y = r.Next(0, 1080);
+                            dicClient[ep.ToString()].self.r = 50;
+                            other_Client.Add(ep.ToString(), dicClient[ep.ToString()].self);
+                            Thread thSending = new Thread(() => SendingData(ep.ToString(), ep));
+                            thSending.Start();
+                            continue;
+                        }
                     }
                     /*lock (_thisLock) 萬一共用變數有問題
                     {
@@ -216,9 +214,10 @@ namespace WinFormsApp1
                     }
                     */
                     //也可以改成傳進來的只有需要的參數 就不用receive 並更新一整個 object
-                   
+
                     if (receive.self.Dead == true)
                     {
+
                         dicClient.Remove(ep.ToString());
                         other_Client.Remove(ep.ToString());
                         dead.Add(ep.ToString());

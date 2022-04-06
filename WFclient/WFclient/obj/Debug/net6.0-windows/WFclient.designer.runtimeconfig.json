@@ -13,7 +13,7 @@
     ],
     "additionalProbingPaths": [
       "C:\\Users\\dragonphoenix\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\dp\\.nuget\\packages"
+      "C:\\Users\\dragonphoenix\\.nuget\\packages"
     ],
     "configProperties": {
       "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true
