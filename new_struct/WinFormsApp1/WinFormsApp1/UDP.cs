@@ -111,7 +111,7 @@ namespace WinFormsApp1
             AddMessage(string.Format("Sending to {0}", ID));
             while (true)
             {
-                Thread.Sleep(15);
+                Thread.Sleep(1);
                 if (_pause.WaitOne(Timeout.Infinite) ==false )break;
                 {
                     try
@@ -123,7 +123,7 @@ namespace WinFormsApp1
                             //AddMessage(dicClient[ID].move.ToString());
                             //設定共有變數
                             dicClient[ID].Other_ID = other_Client;
-                            control.Ball_move(ref dicClient, ID, ref random_little_ball_set);//如果client 端要處理就不用了，如果沒有的話把 上下左右放進來Ball (u,d,l,r)
+                            //control.Ball_move(ref dicClient, ID, ref random_little_ball_set);//如果client 端要處理就不用了，如果沒有的話把 上下左右放進來Ball (u,d,l,r)
                             control.Count_collision(ref dicClient, ID, ref random_little_ball_set);//如果client 端要處理就不用了，我函式再改成統合狀態就好
                             dicClient[ID].little_balls = random_little_ball_set;
                             other_Client[ID].x = dicClient[ID].self.x;
@@ -203,8 +203,8 @@ namespace WinFormsApp1
                         dicClient[ep.ToString()].Other_ID = new Dictionary<string, little_ball>();
                         dicClient[ep.ToString()].little_balls = new List<little_ball>();
                         dicClient[ep.ToString()].self = new little_ball();
-                        dicClient[ep.ToString()].self.x = r.Next(0, 1000);
-                        dicClient[ep.ToString()].self.y = r.Next(0, 1000);
+                        dicClient[ep.ToString()].self.x = r.Next(0, 1920);
+                        dicClient[ep.ToString()].self.y = r.Next(0, 1080);
                         dicClient[ep.ToString()].self.r = 50;
                         Thread thSending = new Thread(() => SendingData(ep.ToString(), ep));
                         thSending.Start();
@@ -228,10 +228,12 @@ namespace WinFormsApp1
                         lock (dicClient)
                         {
                             if (receive.self.x == 0 && receive.self.y == 0) continue;
+                            random_little_ball_set = receive.little_balls;
                             dicClient[ep.ToString()].self.x = receive.self.x;
                             dicClient[ep.ToString()].self.y = receive.self.y;
                             dicClient[ep.ToString()].self.r = receive.self.r;
                             dicClient[ep.ToString()].self.move = receive.self.move;
+                            dicClient[ep.ToString()].little_balls = random_little_ball_set;
                             //if (receive.self.move != 'n')
                             //    AddMessage(String.Format("receive {0}", strReceiveStr));
                         }

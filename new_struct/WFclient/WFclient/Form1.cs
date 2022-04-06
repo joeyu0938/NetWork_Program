@@ -9,6 +9,8 @@ using SocketControl;
 using System.Text.Json;
 using System.Collections.Generic;
 using SkiaSharp;
+using System.Diagnostics;
+
 namespace WFclient
 {
     public partial class Form1 : Form
@@ -17,6 +19,7 @@ namespace WFclient
         private float formsize_y;
         bool started = false;
         Ball b;
+        Balls control;
         SocketHelper SocketH = new SocketHelper();
         private Graphics g;
         private SolidBrush myBrush = new SolidBrush(System.Drawing.Color.Red);
@@ -28,6 +31,7 @@ namespace WFclient
         {
             InitializeComponent();
             b = new Ball();
+            control = new Balls();
             b.self = new little_ball();
             b.Other_ID = new Dictionary<string, little_ball>();
             b.little_balls = new List<little_ball>();
@@ -40,61 +44,20 @@ namespace WFclient
             button2.Location = new Point(this.Size.Width / 2 - button1.Width / 2, this.Size.Height / 2 - button1.Height / 2);
             button2.Visible = false;
             button2.Enabled = false;
+            button3.Visible = false;
+            button3.Enabled = false;
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Size = new Size(this.Size.Width, this.Size.Height);
             pictureBox1.SendToBack();
             sKImageInfo = new SKImageInfo(this.Size.Width, this.Size.Height);
+            label1.Parent = pictureBox1;
+            label2.Parent = pictureBox1;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             formsize_x = this.Width;
             formsize_y = this.Height;
             setTag(this);
-            (thread_sender = new(() =>
-            {
-                while (true)
-                {
-                    Thread.Sleep(30);
-                    SocketH.Send(ref b);
-                    if (b.self.Dead == true) break;
-                    Invoke(() =>
-                    {
-                        label2.Text = b.self.move.ToString();
-                    });
-                }
-            })
-            { IsBackground = true }).Start();
-
-            (thread_receiver = new(() =>
-            {
-                int count = 0;
-                double ping = 0;
-                DateTime dateTime = DateTime.Now;
-                DateTime LastRev = DateTime.Now;
-                while (true)
-                {
-                    if (b.self.Dead == true) break;
-                    string rev = SocketH.Receive();
-                    if (rev != "")
-                        b = JsonSerializer.Deserialize<Ball>(rev);
-                    Invoke(() =>
-                    {
-                        if (rev != "")
-                        {
-                            count++;
-                            if ((DateTime.Now - dateTime).TotalMilliseconds > 500)
-                            {
-                                dateTime = DateTime.Now;
-                                ping = (dateTime - LastRev).TotalMilliseconds;
-                            }
-                            label1.Text = string.Format("cnt:{0} ping:{1} ms", count.ToString(), ping);
-                            LastRev = DateTime.Now;
-                        }
-                    });
-                }
-            })
-            { IsBackground = true }).Start();
-
         }
         private void Form1_Resize(object sender, EventArgs e)
         {
@@ -111,6 +74,56 @@ namespace WFclient
             started = true;
             if (started)
             {
+                (thread_sender = new(() =>
+                {
+                    while (true)
+                    {
+                        Thread.Sleep(1);
+                        //control.Count_collision(ref b);
+                        lock (b)
+                        {
+                            control.Ball_move(ref b);
+                            SocketH.Send(ref b);
+                            if (b.self.Dead == true) break;
+                            Invoke(() =>
+                            {
+                                label2.Text = b.self.move.ToString();
+                            });
+                        }
+                    }
+                })
+                { IsBackground = true }).Start();
+
+                (thread_receiver = new(() =>
+                {
+                    int count = 0;
+                    double ping = 0;
+                    DateTime dateTime = DateTime.Now;
+                    DateTime LastRev = DateTime.Now;
+                    while (true)
+                    {
+                        string rev = SocketH.Receive();
+                        if (rev != "")
+                            b = JsonSerializer.Deserialize<Ball>(rev);
+                        Invoke(() =>
+                        {
+                            if (rev != "")
+                            {
+                                count++;
+                                if ((DateTime.Now - dateTime).TotalMilliseconds > 500)
+                                {
+                                    dateTime = DateTime.Now;
+                                    ping = (dateTime - LastRev).TotalMilliseconds;
+                                }
+                                label1.Text = string.Format("cnt:{0} ping:{1} ms", count.ToString(), ping);
+                                LastRev = DateTime.Now;
+                            }
+                        });
+                        if (b.self.Dead == true) break;
+                    }
+                })
+                { IsBackground = true }).Start();
+
                 (thread_render = new(() =>
                 {
                     while (true)
@@ -134,6 +147,11 @@ namespace WFclient
             started = false;
             System.Environment.Exit(0);
         }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            started = false;
+            System.Environment.Exit(0);
+        }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.W)
@@ -153,9 +171,21 @@ namespace WFclient
                 b.self.move = 'd';
             }
         }
-        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            b.self.move = 'n';
+            if (e.KeyChar == ((char)Keys.Escape))
+            {
+                if (button3.Visible == true)
+                {
+                    button3.Visible = false;
+                    button3.Enabled = false;
+                }
+                else
+                {
+                    button3.Visible = true;
+                    button3.Enabled = true;
+                }
+            }
         }
         private void Render()
         {
@@ -188,25 +218,32 @@ namespace WFclient
             }
             else
             {
-                label1.BackColor = Color.Tan;
-                label2.BackColor = Color.Tan;
+                label1.BackColor = Color.Transparent;
+                label2.BackColor = Color.Transparent;
                 using (SKSurface surface = SKSurface.Create(sKImageInfo))
                 {
                     SKCanvas canvas = surface.Canvas;
                     canvas.Clear(SKColors.Tan);
                     using (SKPaint paint = new SKPaint())
                     {
+                        SKPaint textPaint = new SKPaint();
+                        textPaint.Color = SKColors.Black;
+                        textPaint.TextSize = b.self.r;
                         paint.Color = SKColors.Blue;
                         paint.Style = SKPaintStyle.Fill;
+                        float text_x = b.self.x - (textPaint.MeasureText(b.self.r.ToString())/2);
+                        float text_y = b.self.y + (textPaint.TextSize / 2);
                         canvas.DrawCircle(b.self.x, b.self.y, b.self.r, paint);
-                        if (b.Other_ID.Count() != null)
+                        canvas.DrawText(b.self.r.ToString(), text_x, text_y, textPaint);
+                        if (b.Other_ID.Count() != 0)
                         {
-                            Random random = new Random();
                             foreach (string other in b.Other_ID.Keys)
                             {
                                 if (other == b.ID) continue;
                                 paint.Color = SKColors.Green;
+                                textPaint.TextSize = b.Other_ID[other].r;
                                 canvas.DrawCircle(b.Other_ID[other].x, b.Other_ID[other].y, b.Other_ID[other].r, paint);
+                                canvas.DrawText((b.Other_ID[other].r/2).ToString(), b.Other_ID[other].x - (b.Other_ID[other].r / 2), b.Other_ID[other].y + (b.Other_ID[other].r / 2), textPaint);
                             }
                         }
                         if (b.little_balls != null && b.little_balls.Count > 0)
@@ -259,6 +296,12 @@ namespace WFclient
                     setControls(newx, newy, con);
                 }
             }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            started = false;
+            System.Environment.Exit(0);
         }
     }
 }

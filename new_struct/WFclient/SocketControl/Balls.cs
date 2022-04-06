@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using System.Net.Sockets;
+using System.Media;
+using System.Diagnostics;
+
 namespace Classlibary
 {
     [Serializable]
@@ -47,43 +50,29 @@ namespace Classlibary
             }
         }
         //最一開始才要用
-        public void Count_collision(ref Dictionary<string, Ball> other, ref List<little_ball> little_ball_set)
+        public void Count_collision(ref Ball set)
         {
             Balls control = new Balls();
             //我先用n^2 寫
-            if (other.Count == 0) return;
-            foreach (KeyValuePair<string, Ball> x in other)
+            if (set.self.Dead == true) return;
+            foreach (KeyValuePair<string, little_ball> y in set.Other_ID)
             {
-                foreach (KeyValuePair<string, Ball> y in other)
+                if (Math.Pow(Math.Abs(set.self.x - y.Value.x), 2) + Math.Pow(Math.Abs(set.self.y - y.Value.y), 2) < Math.Pow(set.self.r + y.Value.r, 2))
                 {
-                    if (x.Key == y.Key) continue;
-                    if (Math.Pow(Math.Abs(x.Value.self.x - y.Value.self.x), 2) + Math.Pow(Math.Abs(x.Value.self.y - y.Value.self.y), 2) < Math.Pow(x.Value.self.r + y.Value.self.r, 2))
+                    set.self.collision = true;
+                    y.Value.collision = true;
+                    if (set.self.r > y.Value.r)
                     {
-                        x.Value.self.collision = true;
-                        y.Value.self.collision = true;
-                        if (x.Value.self.r > y.Value.self.r)
-                        {
-                            y.Value.self.Dead = true;
-                            little_ball c = new little_ball();
-                            c.x = y.Value.self.x;
-                            c.y = y.Value.self.y;
-                            c.r = 1;
-                            little_ball_set.Add(c);
-                        }
-                        else
-                        {
-                            x.Value.self.Dead = true;
-                            little_ball c = new little_ball();
-                            c.x = x.Value.self.x;
-                            c.y = x.Value.self.y;
-                            c.r = 1;
-                            little_ball_set.Add(c);
-                        }
+                        y.Value.Dead = true;
+                    }
+                    else
+                    {
+                        set.self.Dead = true;
                     }
                 }
             }
         }
-        public void Ball_move(ref Ball set, string id, ref List<little_ball> little_ball_set)//移動
+        public void Ball_move(ref Ball set)//移動
         {
             if (set == null) return;
             switch (set.self.move)
@@ -103,13 +92,17 @@ namespace Classlibary
                 default:
                     return;
             }
-            little_ball d = new little_ball();
-            d.x = set.self.x;
-            d.y = set.self.y;
-            if (little_ball_set.Contains(d))
+            if (set.self.x < 0) set.self.x = 0;
+            if (set.self.x > 1920) set.self.x = 1920;
+            if (set.self.y < 0) set.self.x = 0;
+            if (set.self.y > 1080) set.self.y = 1080;
+            for (int i = set.little_balls.Count - 1; i >= 0; i--)
             {
-                little_ball_set.Remove(d);
-                set.self.r += 3;//半徑變大
+                if (Math.Pow(Math.Abs(set.self.x - set.little_balls[i].x), 2) + Math.Pow(Math.Abs(set.self.y - set.little_balls[i].y), 2) < Math.Pow(set.self.r + set.little_balls[i].r, 2))
+                {
+                    set.self.r += 5;
+                    set.little_balls.Remove(set.little_balls[i]);
+                }
             }
         }
     }

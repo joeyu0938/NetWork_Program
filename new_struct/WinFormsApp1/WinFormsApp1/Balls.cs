@@ -40,8 +40,8 @@ namespace Classlibary
                 tmp.col_r = random.Next(255);
                 tmp.col_g = random.Next(255);
                 tmp.col_b = random.Next(255);
-                tmp.x = random.Next(0, 1500);
-                tmp.y = random.Next(0, 850);
+                tmp.x = random.Next(0, 1920);
+                tmp.y = random.Next(0, 1080);
                 if (!l.Contains(tmp))
                 {
                     l.Add(tmp);

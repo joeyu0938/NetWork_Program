@@ -43,6 +43,10 @@
             "SkiaSharp": {
               "target": "Package",
               "version": "[2.80.3, )"
+            },
+            "System.Windows.Extensions": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             }
           },
           "imports": [

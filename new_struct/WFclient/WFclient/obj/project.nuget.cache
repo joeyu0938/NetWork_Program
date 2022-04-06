@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "lBBrbB2ExZm+ipPT2sRJ4t0lT2Jf1ZH2SPboAcsr4pYOVX15GqMdg92Hnq4PB5KveRfkPPncjCkkeOuTVDP5vw==",
+  "dgSpecHash": "2DeDlpFVu86iYPDThzm1pQVDY4qxY6+aBuhIiBHYN5Cm3iQ0UbIudJ131/DwaG8pzarQpu4UdSkhNGXM85JaCA==",
   "success": true,
   "projectFilePath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\new_struct\\WFclient\\WFclient\\WFclient.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\dragonphoenix\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\dragonphoenix\\.nuget\\packages\\skiasharp\\2.80.3\\skiasharp.2.80.3.nupkg.sha512",
-    "C:\\Users\\dragonphoenix\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+    "C:\\Users\\dragonphoenix\\.nuget\\packages\\system.drawing.common\\6.0.0\\system.drawing.common.6.0.0.nupkg.sha512",
+    "C:\\Users\\dragonphoenix\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
+    "C:\\Users\\dragonphoenix\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }
