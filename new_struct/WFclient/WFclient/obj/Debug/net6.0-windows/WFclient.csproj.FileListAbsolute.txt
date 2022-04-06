@@ -203,3 +203,4 @@ C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\
 C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\ref\WFclient.dll
 C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\Interop.COMAdmin.dll
 C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\WFclient.csproj.ResolveComReference.cache
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\bin\Debug\net6.0-windows\music\eat_little_ball.mp3

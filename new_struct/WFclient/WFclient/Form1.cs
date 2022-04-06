@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Collections.Generic;
 using SkiaSharp;
 using System.Diagnostics;
+using System.Media;
 
 namespace WFclient
 {

@@ -23,7 +23,7 @@ namespace SocketControl
         private byte[] byteReceiveArray = new byte[100000];
         public SocketHelper()
         {
-            iep = new IPEndPoint(IPAddress.Parse("192.168.200"), 1001); 
+            iep = new IPEndPoint(IPAddress.Parse("192.168.0.200"), 1001); 
             socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp); 
         }
         public void Init()
