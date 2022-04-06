@@ -23,9 +23,8 @@ namespace SocketControl
         private byte[] byteReceiveArray = new byte[100000];
         public SocketHelper()
         {
-            iep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1001); 
+            iep = new IPEndPoint(IPAddress.Parse("192.168.200"), 1001); 
             socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp); 
-            socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         }
         public void Init()
         {
@@ -33,14 +32,11 @@ namespace SocketControl
             BallRef.self = new little_ball();
             BallRef.Other_ID = new Dictionary<string, little_ball>();
             BallRef.little_balls = new List<little_ball>();
-
             EndPoint ep = (EndPoint)iep;
             string jsonstring = JsonSerializer.Serialize(BallRef);
             byteSendingArray = Encoding.UTF8.GetBytes(jsonstring);
             socketClient.SendTo(byteSendingArray, ep);
-
-            iep_Receive = new IPEndPoint(IPAddress.Parse("127.0.0.1"), ((IPEndPoint)socketClient.LocalEndPoint).Port);
-            socketServer.Bind(iep_Receive);
+            iep_Receive = (IPEndPoint)socketClient.LocalEndPoint;
             Initialized = true;
         }
         public void Send(ref Ball ball)
@@ -63,10 +59,10 @@ namespace SocketControl
                 return "";
             //接受收據
             EndPoint ep = (EndPoint)iep_Receive;
-            socketServer.ReceiveTimeout = 1000;
+            socketClient.ReceiveTimeout = 1000;
             try
             {
-                int intReceiveLenght = socketServer.ReceiveFrom(byteReceiveArray, ref ep);
+                int intReceiveLenght = socketClient.ReceiveFrom(byteReceiveArray, ref ep);
                 return Encoding.UTF8.GetString(byteReceiveArray, 0, intReceiveLenght);
             }
             catch (Exception)
