@@ -19,7 +19,7 @@ namespace WFclient
     {
         private float formsize_x;
         private float formsize_y;
-        bool started = false;
+        int state;//0:未開始 1:開始 2:贏家 3:輸家
         Ball b;
         Balls control;
         SocketHelper SocketH = new SocketHelper();
@@ -34,6 +34,7 @@ namespace WFclient
         public Form1()
         {
             InitializeComponent();
+            state = 0;
             b = new Ball();
             control = new Balls();
             b.self = new little_ball();
@@ -75,91 +76,95 @@ namespace WFclient
             //Init my socket
             SocketH.Init();
             button1.Visible = false;
-            started = true;
-            if (started)
+            state = 1;
+            (thread_sender = new(() =>
             {
-                (thread_sender = new(() =>
+                while (true)
                 {
-                    while (true)
+                    Thread.Sleep(1);
+                    lock (b)
                     {
-                        Thread.Sleep(1);
-                        lock (b)
-                        {
-                            control.Ball_move(ref b);
-                            SocketH.Send(ref b);
-                            if (b.self.Dead == true) break;
-                            Invoke(() =>
-                            {
-                                label2.Text = b.self.move.ToString();
-                            });
-                        }
-                    }
-                })
-                { IsBackground = true }).Start();
-
-                (thread_receiver = new(() =>
-                {
-                    int count = 0;
-                    double ping = 0;
-                    DateTime dateTime = DateTime.Now;
-                    DateTime LastRev = DateTime.Now;
-                    while (true)
-                    {
-                        string rev = SocketH.Receive();
-                        if (rev != "")
-                            b = JsonSerializer.Deserialize<Ball>(rev);
-                        if (rev == "")
-                        {
-                            SocketH.Init();
-                        }
+                        control.Ball_move(ref b);
+                        SocketH.Send(ref b);
+                        if (b.self.Dead == true) state = 3;
+                        else if (b.self.r > 400) state = 2;
                         Invoke(() =>
                         {
-                            if (rev != "")
-                            {
-                                count++;
-                                if ((DateTime.Now - dateTime).TotalMilliseconds > 500)
-                                {
-                                    dateTime = DateTime.Now;
-                                    ping = (dateTime - LastRev).TotalMilliseconds;
-                                }
-                                label1.Text = string.Format("cnt:{0} ping:{1} ms", count.ToString(), ping);
-                                LastRev = DateTime.Now;
-                            }
+                            label2.Text = b.self.move.ToString();
                         });
-                        if (b.self.Dead == true) break;
+                        if (state != 1) break;
                     }
-                })
-                { IsBackground = true }).Start();
+                }
+            })
+            { IsBackground = true }).Start();
 
-                (thread_render = new(() =>
+            (thread_receiver = new(() =>
+            {
+                int count = 0;
+                double ping = 0;
+                DateTime dateTime = DateTime.Now;
+                DateTime LastRev = DateTime.Now;
+                while (true)
                 {
-                    while (true)
+                    string rev = SocketH.Receive();
+                    if (rev != "")
                     {
-                        Render();
-                        if (b.self.Dead == true)
-                        {
-                            Invoke(() =>
-                            {
-                                button2.Visible = true;
-                                button2.Enabled = true;
-                            });
-                        }
+                        b = JsonSerializer.Deserialize<Ball>(rev);
                     }
-                })
-                { IsBackground = true }).Start();
-            }
+                    if (rev == "")
+                    {
+                        SocketH.Init();
+                    }
+                    Invoke(() =>
+                    {
+                        if (rev != "")
+                        {
+                            count++;
+                            if ((DateTime.Now - dateTime).TotalMilliseconds > 500)
+                            {
+                                dateTime = DateTime.Now;
+                                ping = (dateTime - LastRev).TotalMilliseconds;
+                            }
+                            label1.Text = string.Format("cnt:{0} ping:{1} ms", count.ToString(), ping);
+                            LastRev = DateTime.Now;
+                        }
+                    });
+                    if (state != 1) break;
+                }
+            })
+            { IsBackground = true }).Start();
+
+            (thread_render = new(() =>
+            {
+                while (true)
+                {
+                    Render();
+                    if (state != 1)
+                    {
+                        Invoke(() =>
+                        {
+                            button2.Visible = true;
+                            button2.Enabled = true;
+                        });
+                    }
+                }
+            })
+            { IsBackground = true }).Start();
+            
             SocketH.Send(ref b);
             string fullPath = Path.GetFullPath("ulin.wav");
             PlayFile(fullPath);
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            started = false;
+            b.self.Dead = true;
+            SocketH.Send(ref b);
             System.Environment.Exit(0);
         }
         private void button3_Click(object sender, EventArgs e)
         {
-            started = false;
+            b.self.Dead = true;
+            SocketH.Send(ref b);
             System.Environment.Exit(0);
         }
         private void PlayFile(String url)
@@ -214,7 +219,7 @@ namespace WFclient
         }
         private void Render()
         {
-            if (b.self.Dead == true)
+            if (state == 3)
             {
                 Invoke(() =>
                 {
@@ -241,7 +246,7 @@ namespace WFclient
                     }
                 }
             }
-            else
+            else if (state == 1)
             {
                 label1.BackColor = Color.Transparent;
                 label2.BackColor = Color.Transparent;
@@ -256,7 +261,7 @@ namespace WFclient
                         textPaint.TextSize = b.self.r;
                         paint.Color = SKColors.Blue;
                         paint.Style = SKPaintStyle.Fill;
-                        float text_x = b.self.x - (textPaint.MeasureText(b.self.r.ToString())/2);
+                        float text_x = b.self.x - (textPaint.MeasureText(b.self.r.ToString()) / 2);
                         float text_y = b.self.y + (textPaint.TextSize / 2);
                         canvas.DrawCircle(b.self.x, b.self.y, b.self.r, paint);
                         canvas.DrawText(b.self.r.ToString(), text_x, text_y, textPaint);
@@ -274,14 +279,49 @@ namespace WFclient
                                 canvas.DrawText(b.Other_ID[other].r.ToString(), text_x, text_y, textPaint);
                             }
                         }
-                        if (b.little_balls != null && b.little_balls.Count > 0)
+                        try
                         {
-                            foreach (little_ball smb_i in b.little_balls)
+                            if (b.little_balls != null && b.little_balls.Count > 0)
                             {
-                                paint.Color = new SKColor(Convert.ToByte(smb_i.col_b), Convert.ToByte(smb_i.col_g), Convert.ToByte(smb_i.col_r));
-                                canvas.DrawCircle(smb_i.x, smb_i.y, 10, paint);
+                                foreach (little_ball smb_i in b.little_balls)
+                                {
+                                    paint.Color = new SKColor(Convert.ToByte(smb_i.col_b), Convert.ToByte(smb_i.col_g), Convert.ToByte(smb_i.col_r));
+                                    canvas.DrawCircle(smb_i.x, smb_i.y, 10, paint);
+                                }
                             }
                         }
+                        catch
+                        {
+
+                        }
+                    }
+                    using (SKImage image = surface.Snapshot())
+                    using (SKData data = image.Encode(SKEncodedImageFormat.Png, 100))
+                    using (MemoryStream mstream = new MemoryStream(data.ToArray()))
+                    {
+                        Bitmap bm = new Bitmap(mstream, false);
+                        pictureBox1.Image = bm;
+                    }
+                }
+            }
+            else if (state == 2)
+            {
+                Invoke(() =>
+                {
+                    label1.Visible = false;
+                    label2.Visible = false;
+                    button2.Text = "我是贏家";
+                });
+                using (SKSurface surface = SKSurface.Create(sKImageInfo))
+                {
+                    SKCanvas canvas = surface.Canvas;
+                    canvas.Clear(SKColors.Black);
+                    using (SKPaint textPaint = new SKPaint())
+                    {
+                        textPaint.Color = SKColors.White;
+                        textPaint.IsAntialias = true;
+                        textPaint.TextSize = 48;
+                        canvas.DrawText("You Win!", 50, 50, textPaint);
                     }
                     using (SKImage image = surface.Snapshot())
                     using (SKData data = image.Encode(SKEncodedImageFormat.Png, 100))
@@ -330,7 +370,6 @@ namespace WFclient
         {
             b.self.Dead = true;
             SocketH.Send(ref b);
-            started = false;
             System.Environment.Exit(0);
         }
     }
