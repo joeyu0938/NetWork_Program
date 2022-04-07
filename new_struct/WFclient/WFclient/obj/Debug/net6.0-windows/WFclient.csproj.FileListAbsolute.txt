@@ -204,8 +204,8 @@ C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\
 C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\Interop.COMAdmin.dll
 C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\WFclient.csproj.ResolveComReference.cache
 C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\Interop.WMPLib.dll
-C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\bin\Debug\net6.0-windows\ulin.wav
 C:\Users\余炘璋\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\Interop.COMAdmin.dll
 C:\Users\余炘璋\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\Interop.WMPLib.dll
 C:\Users\余炘璋\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\WFclient.csproj.ResolveComReference.cache
 C:\Users\余炘璋\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\WFclient.g.resources
+C:\Users\dragonphoenix\Desktop\NetWork_Program\new_struct\WFclient\WFclient\obj\Debug\net6.0-windows\WFclient.g.resources

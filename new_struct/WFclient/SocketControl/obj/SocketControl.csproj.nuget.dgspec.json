@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\余炘璋\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\SocketControl.csproj": {}
+    "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\SocketControl.csproj": {}
   },
   "projects": {
-    "C:\\Users\\余炘璋\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\SocketControl.csproj": {
+    "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\SocketControl.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\余炘璋\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\SocketControl.csproj",
+        "projectUniqueName": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\SocketControl.csproj",
         "projectName": "SocketControl",
-        "projectPath": "C:\\Users\\余炘璋\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\SocketControl.csproj",
-        "packagesPath": "C:\\Users\\余炘璋\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\余炘璋\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\obj\\",
+        "projectPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\SocketControl.csproj",
+        "packagesPath": "C:\\Users\\dragonphoenix\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dragonphoenix\\Desktop\\NetWork_Program\\new_struct\\WFclient\\SocketControl\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\余炘璋\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dragonphoenix\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

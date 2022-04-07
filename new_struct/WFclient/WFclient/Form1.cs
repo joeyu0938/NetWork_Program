@@ -148,23 +148,9 @@ namespace WFclient
                 })
                 { IsBackground = true }).Start();
             }
-            //(thread_sounder = new(() =>
-            //{
-            //    SoundPlayer bgPlayer = new SoundPlayer();
-            //    try
-            //    {
-            //        string fullPath = Path.GetFullPath("ulin.wav");
-            //        bgPlayer.SoundLocation = fullPath;
-            //        bgPlayer.LoadAsync();
-            //        bgPlayer.PlayLooping();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //    }
-            //})
-            //{ IsBackground = true }).Start();
             SocketH.Send(ref b);
-            PlayFile("C:\\Users\\§EÍQ¼ý\\Desktop\\NetWork_Program\\new_struct\\WFclient\\WFclient\\ulin.wav");
+            string fullPath = Path.GetFullPath("ulin.wav");
+            PlayFile(fullPath);
         }
         private void button2_Click(object sender, EventArgs e)
         {
