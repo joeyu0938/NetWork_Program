@@ -124,16 +124,16 @@ namespace Classlibary
             switch (set.self.move)
             {
                 case 'w':
-                    set.self.y -= 3;
+                    set.self.y -= 1;
                     break;
                 case 'd':
-                    set.self.x += 3;
+                    set.self.x += 1;
                     break;
                 case 'a':
-                    set.self.x -= 3;
+                    set.self.x -= 1;
                     break;
                 case 's':
-                    set.self.y += 3;
+                    set.self.y += 1;
                     break;
                 default:
                     return;

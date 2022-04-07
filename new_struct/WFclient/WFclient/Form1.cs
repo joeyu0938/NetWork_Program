@@ -103,6 +103,8 @@ namespace WFclient
                         if (state != 1)
                         {
                             Player.controls.pause();
+                            b.self.Dead = true;
+                            SocketH.Send(ref b);
                             break;
                         }
                     }
@@ -150,7 +152,14 @@ namespace WFclient
             {
                 while (true)
                 {
-                    Render();
+                    try
+                    {
+                        Render();
+                    }
+                    catch
+                    {
+
+                    }
                     if (state != 1)
                     {
                         Invoke(() =>
@@ -163,7 +172,7 @@ namespace WFclient
             })
             { IsBackground = true }).Start();
             
-            SocketH.Send(ref b);
+            //SocketH.Send(ref b);
             string fullPath = Path.GetFullPath("ulin.wav");
             PlayFile(fullPath);
         }
