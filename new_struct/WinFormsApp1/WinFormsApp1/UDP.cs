@@ -87,7 +87,7 @@ namespace WinFormsApp1
     
 
         //傳入: Ball的參數 開始傳送data
-        private void SendingData(string ID,EndPoint ep)//Sendingdata 會在新增client 的時候自動再開一個thread
+        private void SendingData(string ID,EndPoint tmp)//Sendingdata 會在新增client 的時候自動再開一個thread
         {
             
             int cnt = 0;
@@ -97,7 +97,15 @@ namespace WinFormsApp1
             //傳送資料
             AddMessage("傳送");
             Balls control = new Balls();// 要處理的動作
-            if (dead.Contains(ep.ToString())) return;
+            if (dead.Contains(tmp.ToString())) return;
+            try
+            {
+                other_Client.Add(tmp.ToString(), dicClient[ID].self);
+            }
+            catch
+            {
+                AddMessage(string.Format("Fail adding {0}", tmp.ToString()));
+            }
             dicClient[ID].Other_ID = other_Client;
             dicClient[ID].ID = ID;
             AddMessage(string.Format("Sending to {0}", ID));
@@ -140,7 +148,7 @@ namespace WinFormsApp1
                             byteSendingArray = Encoding.UTF8.GetBytes(jsonstring);
                             //AddMessage(string.Format("Sending to {0}", dicClient[ID].s.ToString()));
                             //Thread.Sleep(500);
-                            socketClient.SendTo(byteSendingArray, ep);
+                            socketClient.SendTo(byteSendingArray, tmp);
                             //從進來的endpoint(紀錄的Ip & port)出去
                             //傳送的json string
                             //很重要!!!
@@ -187,23 +195,22 @@ namespace WinFormsApp1
                     string strReceiveStr = Encoding.UTF8.GetString(byteReceiveArray, 0, intReceiveLenght);
                     Ball receive = JsonSerializer.Deserialize<Ball>(strReceiveStr);  //反轉序列化 必須要有一樣且可序列化的class 
                                                                                      //接收傳來的json
-                                                                                     //很重要!!!
-
+                    string tmp = ep.ToString();
+                    EndPoint t = ep;                                                            //很重要!!!
                     lock (ep)
                     {
                         if (dicClient.ContainsKey(ep.ToString()) != true)//如果用戶不存在就新增
                         {
                             Random r = new Random();
                             AddMessage(string.Format("Add {0}", ep.ToString()));
-                            dicClient[ep.ToString()] = new Ball();
-                            dicClient[ep.ToString()].Other_ID = new Dictionary<string, little_ball>();
-                            dicClient[ep.ToString()].little_balls = new List<little_ball>();
-                            dicClient[ep.ToString()].self = new little_ball();
-                            dicClient[ep.ToString()].self.x = r.Next(0, 1920);
-                            dicClient[ep.ToString()].self.y = r.Next(0, 1080);
-                            dicClient[ep.ToString()].self.r = 50;
-                            other_Client.Add(ep.ToString(), dicClient[ep.ToString()].self);
-                            Thread thSending = new Thread(() => SendingData(ep.ToString(), ep));
+                            dicClient[tmp] = new Ball();
+                            dicClient[tmp].Other_ID = new Dictionary<string, little_ball>();
+                            dicClient[tmp].little_balls = new List<little_ball>();
+                            dicClient[tmp].self = new little_ball();
+                            dicClient[tmp].self.x = r.Next(0, 1920);
+                            dicClient[tmp].self.y = r.Next(0, 1080);
+                            dicClient[tmp].self.r = 50;
+                            Thread thSending = new Thread(() => SendingData(tmp.ToString(), t));
                             thSending.Start();
                             continue;
                         }
