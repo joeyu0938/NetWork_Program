@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using SkiaSharp;
 using System.Diagnostics;
 using System.Media;
+using System.Runtime.InteropServices;
 
 namespace WFclient
 {
@@ -27,6 +28,7 @@ namespace WFclient
         private Thread thread_sender;
         private Thread thread_receiver;
         private Thread thread_render;
+        private Thread thread_sounder;
         SKImageInfo sKImageInfo;
         public Form1()
         {
@@ -80,7 +82,6 @@ namespace WFclient
                     while (true)
                     {
                         Thread.Sleep(1);
-                        //control.Count_collision(ref b);
                         lock (b)
                         {
                             control.Ball_move(ref b);
@@ -108,7 +109,7 @@ namespace WFclient
                             b = JsonSerializer.Deserialize<Ball>(rev);
                         if (rev == "")
                         {
-                            SocketH.Init(); 
+                            SocketH.Init();
                         }
                         Invoke(() =>
                         {
@@ -146,7 +147,23 @@ namespace WFclient
                 })
                 { IsBackground = true }).Start();
             }
+            //(thread_sounder = new(() =>
+            //{
+            //    SoundPlayer bgPlayer = new SoundPlayer();
+            //    try
+            //    {
+            //        string fullPath = Path.GetFullPath("ulin.wav");
+            //        bgPlayer.SoundLocation = fullPath;
+            //        bgPlayer.LoadAsync();
+            //        bgPlayer.PlayLooping();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //    }
+            //})
+            //{ IsBackground = true }).Start();
             SocketH.Send(ref b);
+            playBom();
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -157,6 +174,11 @@ namespace WFclient
         {
             started = false;
             System.Environment.Exit(0);
+        }
+        private void playBom() //播放撞擊音樂方法
+        {
+            var player1 = new WMPLib.WindowsMediaPlayer();
+            player1.URL = "eat.wav"; //撞擊聲，我們的聲音檔像圖片一樣加入專案中。
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -313,6 +335,16 @@ namespace WFclient
             SocketH.Send(ref b);
             started = false;
             System.Environment.Exit(0);
+        }
+    }
+    class test //提示音
+    {
+        [DllImport("winmm.dll")]
+        public static extern bool PlaySound(String Filename, int Mod, int Flags);
+        public void Main()
+        {
+            PlaySound(@"d:/qm.wav", 0, 9);
+            //把1替換成9，可連續播放
         }
     }
 }

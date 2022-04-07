@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Net.Sockets;
 using System.Media;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Classlibary
 {
@@ -33,6 +34,33 @@ namespace Classlibary
     [Serializable]
     public class Balls //對Ball 操作的類別
     {
+        public void LoadAsyncSound()
+        {
+            SoundPlayer Player = new SoundPlayer();
+            try
+            {
+                string fullPath = Path.GetFullPath("eat.wav");
+                Player.SoundLocation = fullPath;
+                Player.LoadAsync();
+                Player.Play();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        public void play_bg()
+        {
+            SoundPlayer bgPlayer = new SoundPlayer();
+            try
+            {
+                string fullPath = Path.GetFullPath("ulin.wav");
+                bgPlayer.SoundLocation = fullPath;
+                bgPlayer.PlayLooping();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         //最一開始才要用
         public void random_little_balls(int number, ref List<little_ball> l)
         {
@@ -100,6 +128,7 @@ namespace Classlibary
             {
                 if (Math.Pow(Math.Abs(set.self.x - set.little_balls[i].x), 2) + Math.Pow(Math.Abs(set.self.y - set.little_balls[i].y), 2) < Math.Pow(set.self.r + set.little_balls[i].r, 2))
                 {
+                    LoadAsyncSound();
                     set.self.r += 5;
                     set.little_balls.Remove(set.little_balls[i]);
                 }

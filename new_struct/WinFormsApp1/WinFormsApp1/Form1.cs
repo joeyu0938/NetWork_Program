@@ -18,6 +18,8 @@ namespace WinFormsApp1
         public Form1()
         {
             InitializeComponent();
+            button2.Enabled = false;
+            button3.Enabled = false;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -35,10 +37,14 @@ namespace WinFormsApp1
             u = new UDPCommunication();
             listBox1.Items.Add("Start connecting");
             u.Start(this);
+            button1.Enabled = false;
+            button2.Enabled = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            button2.Enabled = false;
+            button3.Enabled = true;
             listBox1.Items.Add("暫停中");
             u.pause(this);
         }
@@ -50,11 +56,18 @@ namespace WinFormsApp1
 
         private void button3_Click(object sender, EventArgs e)
         {
+            button2.Enabled = true;
+            button3.Enabled = false;
             listBox1.Items.Add("恢復連線");
             u.Resume(this);
         }
         
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            System.Environment.Exit(0);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
         {
             System.Environment.Exit(0);
         }
