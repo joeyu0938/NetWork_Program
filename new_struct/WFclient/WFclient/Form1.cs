@@ -86,13 +86,25 @@ namespace WFclient
                     {
                         control.Ball_move(ref b);
                         SocketH.Send(ref b);
-                        if (b.self.Dead == true) state = 3;
-                        else if (b.self.r > 400) state = 2;
+                        if (b.self.Dead == true)
+                        {
+                            state = 3;
+                            control.lose_sound();
+                        }
+                        else if (b.self.r > 400)
+                        {
+                            state = 2;
+                            control.win_sound();
+                        }
                         Invoke(() =>
                         {
                             label2.Text = b.self.move.ToString();
                         });
-                        if (state != 1) break;
+                        if (state != 1)
+                        {
+                            Player.controls.pause();
+                            break;
+                        }
                     }
                 }
             })
@@ -170,8 +182,7 @@ namespace WFclient
         private void PlayFile(String url)
         {
             Player = new WMPLib.WindowsMediaPlayer();
-            Player.PlayStateChange +=
-                new WMPLib._WMPOCXEvents_PlayStateChangeEventHandler(Player_PlayStateChange);
+            Player.PlayStateChange += new WMPLib._WMPOCXEvents_PlayStateChangeEventHandler(Player_PlayStateChange);
             Player.URL = url;
             Player.controls.play();
         }
@@ -315,7 +326,7 @@ namespace WFclient
                 using (SKSurface surface = SKSurface.Create(sKImageInfo))
                 {
                     SKCanvas canvas = surface.Canvas;
-                    canvas.Clear(SKColors.Black);
+                    canvas.Clear(SKColors.Green);
                     using (SKPaint textPaint = new SKPaint())
                     {
                         textPaint.Color = SKColors.White;

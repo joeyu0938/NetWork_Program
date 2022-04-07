@@ -41,7 +41,37 @@ namespace Classlibary
             {
                 string fullPath = Path.GetFullPath("eat.wav");
                 Player.SoundLocation = fullPath;
-                Player.LoadAsync();
+                Player.Load();
+                Player.Play();
+            }
+            catch (Exception ex)
+            {
+                Player.Dispose();
+            }
+        }
+        public void lose_sound()
+        {
+            SoundPlayer Player = new SoundPlayer();
+            try
+            {
+                string fullPath = Path.GetFullPath("lose.wav");
+                Player.SoundLocation = fullPath;
+                Player.Load();
+                Player.Play();
+            }
+            catch (Exception ex)
+            {
+                Player.Dispose();
+            }
+        }
+        public void win_sound()
+        {
+            SoundPlayer Player = new SoundPlayer();
+            try
+            {
+                string fullPath = Path.GetFullPath("win.wav");
+                Player.SoundLocation = fullPath;
+                Player.Load();
                 Player.Play();
             }
             catch (Exception ex)
