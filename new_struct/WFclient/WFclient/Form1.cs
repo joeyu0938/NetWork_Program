@@ -29,6 +29,7 @@ namespace WFclient
         private Thread thread_receiver;
         private Thread thread_render;
         private Thread thread_sounder;
+        private WMPLib.WindowsMediaPlayer Player;
         SKImageInfo sKImageInfo;
         public Form1()
         {
@@ -163,7 +164,7 @@ namespace WFclient
             //})
             //{ IsBackground = true }).Start();
             SocketH.Send(ref b);
-            playBom();
+            PlayFile("C:\\Users\\余炘璋\\Desktop\\NetWork_Program\\new_struct\\WFclient\\WFclient\\ulin.wav");
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -175,10 +176,20 @@ namespace WFclient
             started = false;
             System.Environment.Exit(0);
         }
-        private void playBom() //播放撞擊音樂方法
+        private void PlayFile(String url)
         {
-            var player1 = new WMPLib.WindowsMediaPlayer();
-            player1.URL = "eat.wav"; //撞擊聲，我們的聲音檔像圖片一樣加入專案中。
+            Player = new WMPLib.WindowsMediaPlayer();
+            Player.PlayStateChange +=
+                new WMPLib._WMPOCXEvents_PlayStateChangeEventHandler(Player_PlayStateChange);
+            Player.URL = url;
+            Player.controls.play();
+        }
+        private void Player_PlayStateChange(int NewState)
+        {
+            if ((WMPLib.WMPPlayState)NewState == WMPLib.WMPPlayState.wmppsStopped)
+            {
+                Player.controls.play();
+            }
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -335,16 +346,6 @@ namespace WFclient
             SocketH.Send(ref b);
             started = false;
             System.Environment.Exit(0);
-        }
-    }
-    class test //提示音
-    {
-        [DllImport("winmm.dll")]
-        public static extern bool PlaySound(String Filename, int Mod, int Flags);
-        public void Main()
-        {
-            PlaySound(@"d:/qm.wav", 0, 9);
-            //把1替換成9，可連續播放
         }
     }
 }

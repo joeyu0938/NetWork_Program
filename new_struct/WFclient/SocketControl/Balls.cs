@@ -46,19 +46,7 @@ namespace Classlibary
             }
             catch (Exception ex)
             {
-            }
-        }
-        public void play_bg()
-        {
-            SoundPlayer bgPlayer = new SoundPlayer();
-            try
-            {
-                string fullPath = Path.GetFullPath("ulin.wav");
-                bgPlayer.SoundLocation = fullPath;
-                bgPlayer.PlayLooping();
-            }
-            catch (Exception ex)
-            {
+                Player.Dispose();
             }
         }
         //最一開始才要用
